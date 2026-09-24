@@ -15,7 +15,7 @@ This repository is organized by the NCL gym categories!
 
 To find a specific set of notes, simply open the corresponding markdown file topic you're looking for!
 
-#### NCL Category Notes Links:
+#### NCL Category Notes Links (WIP):
 
 1. [**Open Source Intelligence (OSINT)**](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md)
 2. [**Cryptography**]
