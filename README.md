@@ -1,7 +1,5 @@
 # National Cyber League Notes
 
-# TryHackMe Room Notes
-
 ## Description:
 
 ### 👋 Introduction:
