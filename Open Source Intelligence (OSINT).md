@@ -1,7 +1,5 @@
 # Open Source Intelligence (OSINT) 
 
-#Cybersecurity #CTF #NCL #Resources 
-
 ## Metadata Extraction
 
 **Metadata** = hidden "data about data" that describes a digital file's history, characteristics, and context without showing its visible content
