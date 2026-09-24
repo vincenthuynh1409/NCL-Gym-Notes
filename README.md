@@ -1,4 +1,4 @@
-# National Cyber League Notes
+# National Cyber League Gym Notes
 
 ## Description:
 
