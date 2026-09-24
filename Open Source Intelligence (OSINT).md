@@ -16,7 +16,8 @@
 2. Saved as `Meta.jpg`
 3. Extract/View metadata: `$ exiftool Meta.jpg`
 
-![[Pasted image 20260921175046.png]]
+<img width="709" height="838" alt="image" src="https://github.com/user-attachments/assets/de575eb9-5e1c-4c80-a708-6da013fc354c" />
+
 
 <br>
 
@@ -76,7 +77,9 @@ It may be helpful to research and define unfamiliar terms from the question befo
 ### WHOIS (Easy) Write-Up
 
 1. Type `$ whois cityinthe.cloud` in Kali Linux terminal
-![[Pasted image 20260921173719.png]]
+
+<img width="891" height="637" alt="image" src="https://github.com/user-attachments/assets/9dd50610-df87-42b0-8a65-3b76b0b86666" />
+
 
 <br>
 
@@ -106,7 +109,8 @@ There are public databases that store records of public keys and their owners so
 3. the key fingerprint is the stuff after `rsa4096/...`
 	- there are two correct answers for this!
 
-![[Screenshot 2026-09-21 180903.png]]
+<img width="993" height="877" alt="image" src="https://github.com/user-attachments/assets/066f63cf-074f-4ed0-af90-56511b71ddd6" />
+
 
 4. to find the email associated with a fingerprint, go back to https://keyserver.ubuntu.com/
 	- (like `7A39A56B73D1E097D57435CFCDE2DE1DCB2077F2`)
@@ -114,7 +118,8 @@ There are public databases that store records of public keys and their owners so
 6. search up: `0x7A39A56B73D1E097D57435CFCDE2DE1DCB2077F2`
 7. find email as well as expiration date
 
-![[Pasted image 20260921180829.png]]
+<img width="1912" height="429" alt="image" src="https://github.com/user-attachments/assets/38bb112a-4e2e-41dd-bd03-5e49dcf1e5db" />
+
 
 <br>
 
@@ -132,7 +137,8 @@ There are public databases that store records of public keys and their owners so
 
 1. Google Browser URL Icon (left of URL) > Connection is Secure > Certificate is Valid > Details
 
-![[Pasted image 20260921183104.png]]
+<img width="303" height="75" alt="image" src="https://github.com/user-attachments/assets/4a3b3ec9-28bf-4335-8a69-0d8250ae1aa8" />
+
 
 2. OR type `www.cyberskyline.com` into https://www.sslshopper.com/ssl-checker.html
 
@@ -149,7 +155,8 @@ There are public databases that store records of public keys and their owners so
 2. download barcode file
 3. select barcode type > drag and drop > "read"
 
-![[Pasted image 20260923152049.png]]
+<img width="819" height="426" alt="image" src="https://github.com/user-attachments/assets/e1f63383-8803-40e7-af66-b4c809f49ddc" />
+
 
 <br>
 
@@ -165,8 +172,10 @@ There are public databases that store records of public keys and their owners so
 1. https://web.archive.org/ (Wayback Machine)
 2. Blue dots represent days with archived pages. Click on days with blue dots to see full pages. Green dots will have pages with redirects.
 
-![[Screenshot 2026-09-23 182234.png]]
+<img width="930" height="814" alt="image" src="https://github.com/user-attachments/assets/9fb44906-d6e8-453d-b45b-efac7bdf917b" />
+
 
 3. To find files from URLs:
 
-![[Pasted image 20260923182340.png]]
+<img width="1482" height="546" alt="image" src="https://github.com/user-attachments/assets/b80b3324-fb35-4f85-bafd-17a4b7026ae5" />
+
