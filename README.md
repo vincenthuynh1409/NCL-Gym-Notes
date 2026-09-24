@@ -14,9 +14,9 @@ This repository is organized by the NCL gym categories!
 
 To find a specific set of notes, simply open the corresponding markdown file topic you're looking for!
 
-#### TryHackMe room Folder Links:
+#### NCL Category Notes Links:
 
-1. [hi](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md)
+1. [**Open Source Intelligence (OSINT)**](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md)
 - - - 
 
 That's pretty much it, happy hacking and reading! :p
