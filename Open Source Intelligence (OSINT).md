@@ -158,7 +158,11 @@ There are public databases that store records of public keys and their owners so
 <img width="819" height="426" alt="image" src="https://github.com/user-attachments/assets/e1f63383-8803-40e7-af66-b4c809f49ddc" />
 
 
+
+
 <br>
+
+
 
 ## Wayback Machine
 
