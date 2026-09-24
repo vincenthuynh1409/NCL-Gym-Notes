@@ -18,7 +18,7 @@ To find a specific set of notes, simply open the corresponding markdown file top
 #### NCL Category Notes Links (WIP):
 
 1. [**Open Source Intelligence (OSINT)**](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md)
-2. [**Cryptography**]
+2. [**Cryptography**](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Cryptography.md)
 3. [**Password Cracking**]
 4. [**Forensics**]
 5. [**Log Analysis**]
