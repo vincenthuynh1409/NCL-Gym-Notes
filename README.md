@@ -6,7 +6,7 @@
 
 ### 👋 Introduction:
 
-This is my **personal cybersecurity study notes** from **National Cyber League Gymnasium** practice, covering **tools, commands, techniques,** and **problem-solving strategies** across **Open Source Intelligence, Cryptography, Log Analysis, Network Traffic Analysis, Scanning, Forensics, Password Cracking, Enumeration & Exploitation,** and **Web Application Security.** :)
+This is my **personal cybersecurity study notes** from **National Cyber League Gymnasium** practice, covering **tools, commands, techniques,** and **problem-solving strategies** across **Open Source Intelligence, Cryptography, Log Analysis, Network Traffic Analysis, Scanning & Reconnaissance, Forensics, Password Cracking, Enumeration & Exploitation,** and **Web Application Security.** :)
 
 ### 🗺️ Navigation:
 
@@ -17,6 +17,14 @@ To find a specific set of notes, simply open the corresponding markdown file top
 #### NCL Category Notes Links:
 
 1. [**Open Source Intelligence (OSINT)**](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md)
+2. [**Cryptography**]
+3. [**Password Cracking**]
+4. [**Forensics**]
+5. [**Log Analysis**]
+6. [**Network Traffic Analysis**]
+7. [**Scanning & Reconnaissance**]
+8. [**Web Application Exploitation**]
+9. [**Enumeration & Exploitation**]
 - - - 
 
 That's pretty much it, happy hacking and reading! :p
