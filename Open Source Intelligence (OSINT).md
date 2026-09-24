@@ -3,6 +3,7 @@
 ## Metadata Extraction
 
 **Metadata** = hidden "data about data" that describes a digital file's history, characteristics, and context without showing its visible content
+
 ### 🛠️ Tools
 
 1. `$ exiftool [filename]` (Kali Linux terminal)
@@ -23,41 +24,42 @@
 
 ## Lookup
 
-A quick online search of each question should provide several sources with the answer. 
+Do online search of each question to get your answers.
 
-Be careful to make sure that the answer that you obtain can be verified using an authoritative source.
+> Make sure answers are verified using an authoritative source!
 
-If you search for “DNS protocol specification”, you should find that the Internet Engineering Task Force (IETF) publishes the specification for DNS. You should use IETF resources as the authoritative source for answers.
+If you search for “DNS protocol specification”, you should find that the Internet Engineering Task Force (IETF) publishes the specification for DNS. 
+You should use IETF resources as the authoritative source for answers!
 
-Knowing how to read and understand a specification document is important because many technologies across all industries use these types of documents to keep implementation uniform.
 
-DNSSEC is described in [RFC 4034](https://datatracker.ietf.org/doc/html/rfc4034). The information related to the record can be found in section 2.
+- DNSSEC - [RFC 4034](https://datatracker.ietf.org/doc/html/rfc4034) (Section 2)
 
-The DNS Extension to Support IPv6 is described in [RFD 3596](https://www.rfc-editor.org/rfc/rfc3596). The information related to the record can be found in section 2.
+- DNS Extension to Support IPv6 - [RFD 3596](https://www.rfc-editor.org/rfc/rfc3596) (Section 2)
 
-The DNS record to delegate a DNS zone is described in [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035). Answer this challenge require reading the specification to understand what it means to delegate a DNS zone in order to identify that they DNS record type that is need to delegate a DNS zone is the one that indicates an authoritative name server.
+- DNS record to delegate a DNS zone - [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035)
 
 <br>
 
 ## Threat Intelligence
 
-This challenge will give you experience conducting research on common security vulnerabilities. All that is required to solve these questions is to query online search engines and find multiple sources to confirm the answers.
+To solve these questions, simply just query online search engines like Wiki and find multiple sources to confirm the answer!
 
-Wikipedia can be a good place for open source intelligence work because multiple sources for the information are often linked on the page. Always be sure to double check and verify your answer with another source!
+**Wikipedia** can be a good place for OSINT because multiple sources for the information are often linked on the page. 
 
-When you want to make searching Wikipedia easier, or search any webpage or document, use `CTRL + F` on your keyboard and enter what you want to find into the dialog box that pops up.
+> Always be sure to double check and verify your answer with another source!!!
+
+When you want to make searching Wikipedia easier, or search any webpage or document, use `CTRL + F` on your keyboard and enter what you want.
 
 <br>
 
 ## HTTP Headers
 
-This challenge will give you experience researching HTTP headers.
+The answers to these questions can be found by doing an online search!
 
-The answers to these questions can be found by doing an online search. A full table of [HTTP headers can be found on Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields).
+- Full Table of HTTP headers (Wiki): https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
 
-A useful skill for this challenge is to easily search or find keywords or phrases on a webpage. One method involves using the search function by pressing “CTRL + F” on the keyboard. This opens a dialog box where a keyword or short phrase can be entered to find specific content on the page.
+When you want to make searching Wikipedia easier, or search any webpage or document, use `CTRL + F` on your keyboard and enter what you want.
 
-It may be helpful to research and define unfamiliar terms from the question beforehand for better comprehension. Afterward, using “CTRL + F” can assist in identifying related terms or similar language within the page content.
 
 <br>
 
@@ -65,9 +67,9 @@ It may be helpful to research and define unfamiliar terms from the question befo
 
 **WHOIS** = protocol for querying databases that store information about Internet resources and domain names.
 
-**Domain Name** = human-readable address that identifies resources on the Internet. Instead of the numerical IP addresses (e.g. `8.8.8.8`) that computers use, domain names (e.g. `google.com`) provide an easier way for humans to access the Internet.
+**Domain Name** = human-readable address (from IP address) that identifies resources on the Internet.
 
-**DNS** = manages and translates domain names 
+**DNS** = manages and translates domain names! 
 
 ### 🛠️ Tools
 
@@ -90,11 +92,9 @@ It may be helpful to research and define unfamiliar terms from the question befo
 **PGP Cryptography** = allows a message to be encrypted so that it can only be decrypted by its intended recipient. 
 - To achieve this, the sender will use the recipient’s public key to encrypt the message so that only the recipient’s private key can decrypt the message.
 
-> Alice requires Bob’s public key in order to encrypt a message so that only his private key may read it! 
-
 There are public databases that store records of public keys and their owners so that a sender may obtain their recipient’s public key to encrypt a message for them. 
 
-> There is no one single authoritative source keeping records of public keys, so it is important to compare the results across multiple different databases.
+> Make sure you compare the results across multiple different databases.
 
 ### 🛠️ Tools
 
