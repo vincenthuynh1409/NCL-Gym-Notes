@@ -1,7 +1,5 @@
 # Cryptography
 
-#Cybersecurity #CTF #NCL #Resources 
-
 ## Decryption
 
 ### 🛠️ Tools
