@@ -6,8 +6,8 @@
 
 - https://gchq.github.io/CyberChef/ (CyberChef)
 - https://www.dcode.fr/cipher-identifier (dCode Cipher Identifier)
-- https://29a.ch/photo-forensics/ (Digital Forensics)
-- https://georgeom.net/StegOnline/upload (Steganography)
+- https://29a.ch/photo-forensics/ (Forensically - Digital Forensics)
+- https://georgeom.net/StegOnline/upload (Steganography Tool)
 
 ### Number Bases (Easy) Write-Up
 
