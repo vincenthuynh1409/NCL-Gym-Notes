@@ -45,3 +45,42 @@
 > **Morse Code** → b/c it  relies entirely on two characters: dots (`.`) representing short signals, and dashes (`-` or `_`) representing long signals.
 
 
+## French (Medium) Write-Up
+
+1. `Y ln xkv lubj swlzqvkht, A vmzb pjk bbua we ddgs ILQ-GQYU-8026` 
+	- Key = `qizkwcgqbs`
+
+> **Vigenère Cipher** → likely because It gives an alphabetic key: `QIZKWCGQBS`, Vigenère uses a repeating key, Spaces/punctuation remain unchanged. 
+
+
+## Fencing (Medium) Write-Up
+
+Indicated the keys = "3" and "5".
+
+1. `Cair eruSA-0org sgaeudrpesr K-II98.ue cn seYQ3`
+	- use key = `3`
+
+2. `F daS-eefn n KZ3eheadty.YI8lta oiwy-Q0. r aI2`
+	- use key = `5`
+
+> **Rail Fence cipher** → Rail Fence uses a number of rails as its key, commonly 3, 4, 5, etc.; The ciphertext looks like letters have been rearranged rather than substituted; Spaces/punctuation are still present in unusual positions, which can happen with a transposition cipher.
+
+
+## XOR (Medium) Write-Up
+
+1. `2*,K(,81Y>+5.$+/%E.#$-K<6>E1*3<K)<*77.!Y8. F$7,)T[VM^`**
+	- Key = `01101011 01100101 01111001`
+
+> **XOR** → - The binary (`01101011 01100101 01111001`) converts to "key"`; The ciphertext contains **lots of symbols** (`* , > + $ % # <`), which is common when binary/ASCII data is XOR-encrypted.
+> 
+> "XOR Decode" > type in `01101011 01100101 01111001` in "Key" > change key type to binary **OR** convert binary to latin > change key type to LATIN1
+
+
+## Strings (Easy) Write-Up
+
+Finding hidden flag inside JPG image file given:
+1. OPTION 1 = `$ strings Steg1.jpg | grep SKY`
+2. OPTION 2 = https://29a.ch/photo-forensics/ > "Open File" > "String Extraction"
+3. OPTION 3 = https://georgeom.net/StegOnline/upload > Upload file > "Show Strings"
+
+
