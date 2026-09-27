@@ -58,6 +58,8 @@
 3. create a txt file containing ALL law & order svu episode names (find online) > this would be your dictionary
 4. use HYBRID ATTACK (since there is wordlist dictionary + number brute force) --> `hashcat hashes.txt -m 0 -a 0 -a 6  law_and_order_svu_episode_titles_all.txt ?d?d`
 
+<br>
+
 ## /etc/shadow
 
 Example Full Shadow Entry:
