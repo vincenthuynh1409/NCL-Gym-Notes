@@ -87,6 +87,7 @@ $y$j9T$/WzixhAsn8sdXhCquYzh01$KZlio78LilItobsx/17ecFf1e2SbsduhP1sZEWuHrL4
 ### 🛠️ Tools
 
 - https://www.epochconverter.com/seconds-days-since-y0 (Epoch Converter)
+- `$ john [options] [password files]` (JohnTheRipper)
 ### Kali Linux
 
 - *We have obtained `/etc/shadow` from a Kali Linux machine. Help us obtain the password, we think this might be a using a password from the Rockyou wordlist.*
