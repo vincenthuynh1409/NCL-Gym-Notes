@@ -2,6 +2,9 @@
 
 ## Hashcat
 
+Use when given just a hash password :)
+- Example: `68a96446a5afb4ab69a2d15091771e39`
+
 ### 🛠️ Tools
 
 1. https://www.tunnelsup.com/hash-analyzer/ (Hash Analyzer/Identifier)
