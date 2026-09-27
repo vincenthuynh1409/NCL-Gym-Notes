@@ -1,7 +1,5 @@
 # Password Cracking
 
-#Cybersecurity #CTF #NCL #Resources 
-
 ## Hashcat
 
 ### 🛠️ Tools
