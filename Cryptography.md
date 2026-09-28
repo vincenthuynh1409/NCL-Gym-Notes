@@ -27,11 +27,15 @@
 
 > Convert from **Binary** > then turns into **Base64** > Decrypt!
 
+<br>
+
 ### Shift (Easy) Write-Up
 
 1. `iveghny ynxr`
 
 > Use dCode to identify cipher > **ROT13**
+
+<br>
 
 ### @Bash (Easy) Write-Up
 
@@ -39,6 +43,7 @@
 
 > Use dCode to identify cipher > **AtBash Cipher**
 
+<br>
 
 ### Beep (Easy) Write-Up
 
@@ -46,6 +51,7 @@
 
 > **Morse Code** → b/c it  relies entirely on two characters: dots (`.`) representing short signals, and dashes (`-` or `_`) representing long signals.
 
+<br>
 
 ## French (Medium) Write-Up
 
@@ -54,6 +60,7 @@
 
 > **Vigenère Cipher** → likely because It gives an alphabetic key: `QIZKWCGQBS`, Vigenère uses a repeating key, Spaces/punctuation remain unchanged. 
 
+<br>
 
 ## Fencing (Medium) Write-Up
 
@@ -67,6 +74,7 @@ Indicated the keys = "3" and "5".
 
 > **Rail Fence cipher** → Rail Fence uses a number of rails as its key, commonly 3, 4, 5, etc.; The ciphertext looks like letters have been rearranged rather than substituted; Spaces/punctuation are still present in unusual positions, which can happen with a transposition cipher.
 
+<br>
 
 ## XOR (Medium) Write-Up
 
@@ -77,6 +85,7 @@ Indicated the keys = "3" and "5".
 > 
 > "XOR Decode" > type in `01101011 01100101 01111001` in "Key" > change key type to binary **OR** convert binary to latin > change key type to LATIN1
 
+<br>
 
 ## Strings (Easy) Write-Up
 
