@@ -17,7 +17,7 @@
 2. Saved as `Meta.jpg`
 3. Extract/View metadata: `$ exiftool Meta.jpg`
 
-<img width="709" height="838" alt="image" src="https://github.com/user-attachments/assets/de575eb9-5e1c-4c80-a708-6da013fc354c" />
+
 
 
 <br>
