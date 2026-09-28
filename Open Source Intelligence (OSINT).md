@@ -80,7 +80,6 @@ When you want to make searching Wikipedia easier, or search any webpage or docum
 
 1. Type `$ whois cityinthe.cloud` in Kali Linux terminal
 
-<img width="891" height="637" alt="image" src="https://github.com/user-attachments/assets/9dd50610-df87-42b0-8a65-3b76b0b86666" />
 
 
 <br>
