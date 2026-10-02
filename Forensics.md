@@ -4,7 +4,7 @@
 
 ### 🛠️ Tools
 
-1. `$ git` (Kali Linux terminal command)
+1. `$ git [options]`
 2. https://docs.github.com/en/get-started/git-basics/set-up-git (Git basics)
 
 ### Version Control (Easy) Write-Up
