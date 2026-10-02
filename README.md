@@ -1,4 +1,4 @@
-# National Cyber League Gym Notes
+# National Cyber League (NCL) Gymnasium Notes
 
 ### 👋 Introduction:
 
