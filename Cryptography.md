@@ -4,10 +4,10 @@
 
 ### 🛠️ Tools
 
-- https://gchq.github.io/CyberChef/ (CyberChef)
-- https://www.dcode.fr/cipher-identifier (dCode Cipher Identifier)
-- https://29a.ch/photo-forensics/ (Forensically - Digital Forensics)
-- https://georgeom.net/StegOnline/upload (StegOnline - Steganography Tool)
+1. https://gchq.github.io/CyberChef/ (CyberChef)
+2. https://www.dcode.fr/cipher-identifier (dCode Cipher Identifier)
+3. https://29a.ch/photo-forensics/ (Forensically - Digital Forensics)
+4. https://georgeom.net/StegOnline/upload (StegOnline - Steganography Tool)
 
 ### Number Bases (Easy) Write-Up
 
