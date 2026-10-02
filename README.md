@@ -1,7 +1,5 @@
 # National Cyber League Gym Notes
 
-## Description:
-
 ### 👋 Introduction:
 
 This is my **personal cybersecurity study notes** from **National Cyber League Gymnasium** practice, covering **tools, commands, techniques,** and **problem-solving strategies** across **Open Source Intelligence, Cryptography, Log Analysis, Network Traffic Analysis, Scanning & Reconnaissance, Forensics, Password Cracking, Enumeration & Exploitation,** and **Web Application Security.** :)
