@@ -13,6 +13,9 @@ This repository is organized by the NCL gym categories!
 
 To find a specific set of notes, simply open the corresponding markdown file topic you're looking for!
 
+> [!WARNING]
+> FYI - Currently have not completed all the NCL Gymnasium write-ups and notes as of now, so there are some missing notes below.
+
 ### NCL Category Notes (WIP)
 
 | # | Category | Notes |
