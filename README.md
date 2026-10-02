@@ -13,17 +13,19 @@ This repository is organized by the NCL gym categories!
 
 To find a specific set of notes, simply open the corresponding markdown file topic you're looking for!
 
-#### NCL Category Notes Links (WIP):
+### NCL Category Notes (WIP)
 
-1. [**Open Source Intelligence (OSINT)**](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md)
-2. [**Cryptography**](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Cryptography.md)
-3. [**Password Cracking**](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Password%20Cracking.md)
-4. [**Forensics**]
-5. [**Log Analysis**]
-6. [**Network Traffic Analysis**]
-7. [**Scanning & Reconnaissance**]
-8. [**Web Application Exploitation**]
-9. [**Enumeration & Exploitation**]
+| # | Category | Notes |
+|---|---|---|
+| **1** | Open Source Intelligence (OSINT) | [View Notes](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md) |
+| **2** | Cryptography | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Cryptography.md) |
+| **3** | Password Cracking | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Password%20Cracking.md) |
+| **4** | Forensics | 🚧 Coming Soon |
+| **5** | Log Analysis | 🚧 Coming Soon |
+| **6** | Network Traffic Analysis | 🚧 Coming Soon |
+| **7** | Scanning & Reconnaissance | 🚧 Coming Soon |
+| **8** | Web Application Exploitation | 🚧 Coming Soon |
+| **9** | Enumeration & Exploitation | 🚧 Coming Soon |
 - - - 
 
 That's pretty much it, happy hacking and reading! :p
