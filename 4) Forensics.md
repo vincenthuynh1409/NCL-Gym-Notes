@@ -112,3 +112,9 @@
 
 3. unzip it by running: `$ unzip SuperAwesomeDoc.docx`
 4. explore the files and directories until you find the image with the flag!
+
+<br>
+
+## e
+
+### Hack The Gibson (Medium) Write-Up
