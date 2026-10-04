@@ -98,5 +98,17 @@
 5. In the Hex editor, replace the last 4 bytes with `00 00 00 0D`
 6. Save as .PNG > Open new recovered file > get flag!!!
 
+<br>
 
+## Doctor (Medium) Write-Up
 
+- *We think this document is hiding something. Can you find what is hidden?*
+	- "SuperAwesomeDoc.docx"
+
+1. if you open the Microsoft document file, there isn't anything useful > after `$ file SuperAwesomeDoc.docx`, there's also nothing useful.
+2. after doing `$ binwalk SuperAwesomeDoc.docx` we can see a bunch of ZIP file archives which is very strange, to confirm this > import file into CyberChef > To Hex > Check ZIP file signature on wiki > matches! 
+
+> `SuperAwesomeDoc.docx` is ACTUALLY a .zip file!
+
+3. unzip it by running: `$ unzip SuperAwesomeDoc.docx`
+4. explore the files and directories until you find the image with the flag!
