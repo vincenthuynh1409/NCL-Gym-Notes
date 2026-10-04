@@ -32,6 +32,7 @@
 1. nothing useful in current branch, to switch branches: run `$ git branch` in `~/git_backup` directory to see the available branches in that repository
 2. to switch branches, run: `$ git switch [branch name]`
 
+<br>
 
 ## Binwalk
 
@@ -58,6 +59,7 @@
 > i.e. there are so much different approaches to solving these problems!
 
 <br>
+
 ## File Signatures & Bytes
 
 ### 🛠️ Tools
