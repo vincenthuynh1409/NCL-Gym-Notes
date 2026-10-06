@@ -115,6 +115,37 @@
 
 <br>
 
-## NETDATA
+<br>
 
-### Hack The Gibson (Medium) Write-Up
+## Mainframe
+
+### 🛠️ Tools
+
+1. `$ base64 -d [file] > [output]` (base64)
+2. google
+3. `$ xxd [file]` (Hex Editor)
+4. `$ dd if=[input file] of=[output file] conv=[conversion]` (data conversion)
+5. `$ john --format=[format] --wordlist=/usr/share/wordlists/rockyou.txt --rules=[rule] [file]` (John the ripper)
+
+### Hack the Gibson (Medium) Write-Up
+
+- *North Central Loan's mainframe was compromised by Liber8tion. All we've been able to gather so far is this file, analyze it and figure what they were able to collect: "ARCHIVE.NETDATA.XMI"*
+
+1. after doing `$ file ARCHIVE.NETDATA.XMI`, it displays "ASCII text" and doing `$ cat ARCHIVE.NETDATA.XMI` displays a a bunch of base64 type gibberish > we can assume this file has been encoded in base64
+2. to decrypt the file, run: `$ base64 -d ARCHIVE.NETDATA.XMI > ARCHIVE.NETDATA.decoded.XMI` 
+3. then: `$ file ARCHIVE.NETDATA.decoded.XMI` > this file is a **IBM NETDATA** file!
+4. Next, to find what type of file extension is the archive inside the XMI file, look up `extract netdata xmi`:
+	1. `python3 -m venv venv`
+	2. `source venv/bin/activate`
+	3. `pip install xmi-reader`
+5. Using the XMI reader documentation, extract the decoded XMI file with the command:  `$ extractxmi ARCHIVE.NETDATA.decoded.XMI`
+6. after decoding, you would get a new file which would be the archive inside the XMI > it is a **ZIP** file! > unzip: `$ unzip ARCHIVE.NETDATA.DECODED.zip` > you would get a bunch of files
+7. after investigating some of the files by doing `$ file EMAILS`, it just shows a bunch of "@" or diamonds > to see what the file ACTUALLY is, we can use a hex editor > you can run the hex editor in Linux by typing: `$ xxd [file]` > `$ xxd EMAILS`
+8. once its opened, we can already see something different about this hex: there is a lot of repeated `4040` > the question asks what type of encoding the files are in, so after looking up "what type of encoding uses 4040s?" > it results to **EBCDIC**!!!
+9. now since we understand that the file id encoded in EBCDIC, we can decode this by running `dd` a data conversion tool: `$ dd if=input.ebcdic of=output.ascii conv=ascii` (format) > `$ dd if=USERS of=decoded_users conv=ascii` 
+10. after we get the "decoded_users" file, open it by using `cat` > we can see a bunch of hash passwords and by looking them up, the operating system that uses this password hash is called **z/OS**!!!
+11. after looking up what type of hash the passwords are, it shows the hashed passwords in "RACF" format! > before we decrypt, we have to organize the line layout to prevent errors as it is kinda messy, and to do this: `$ sed 's/ \{2,\}/\n/g' decoded_users.txt > users_clean.txt` 
+12. now, we just use `john` to decrypt the hashes: `$ john --format=racf --wordlist=/usr/share/wordlists/rockyou.txt users_clean.txt` > `$ john --show users_clean.txt`
+13. in order to answer the last question, we must use the "best 64" john rules (curated set of 64 high-efficiency password mutation rules) > `$ john --format=RACF --wordlist=/usr/share/wordlists/rockyou.txt --rules=best64 users_clean.txt`
+
+
