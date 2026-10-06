@@ -11,9 +11,9 @@ Use when given just a hash password :)
 2. `$ hashcat --identify ([hash] or [hashes.txt])` (Hash Analyzer/Identifier)
 3. `$ hashcat [hashes.txt] -m [hash mode] -a [attack type] [etc]` (Hashcat)
 	- Examples:
-		1. Dictionary Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 0 [path to dictionary]
-		2. Brute Force Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 3 [brute force]
-		3. Hybrid Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 6 [path to dictionary] [brute force]
+		1. Dictionary Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 0 [path to dictionary]`
+		2. Brute Force Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 3 [brute force]`
+		3. Hybrid Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 6 [path to dictionary] [brute force]`
 
 ### RockYou (Easy) Write-Up
 
