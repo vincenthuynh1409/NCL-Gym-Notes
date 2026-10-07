@@ -124,6 +124,9 @@
 1. `$ base64 -d [file] > [output]` (base64)
 2. google
 3. `$ xxd [file]` (Hex Editor)
+
+> or you can use other Hex Editors :)
+ 
 4. `$ dd if=[input file] of=[output file] conv=[conversion]` (data conversion)
 5. `$ john --format=[format] --wordlist=/usr/share/wordlists/rockyou.txt --rules=[rule] [file]` (John the ripper)
 
