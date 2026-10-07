@@ -132,6 +132,7 @@
 - *North Central Loan's mainframe was compromised by Liber8tion. All we've been able to gather so far is this file, analyze it and figure what they were able to collect: "ARCHIVE.NETDATA.XMI"*
 
 1. after doing `$ file ARCHIVE.NETDATA.XMI`, it displays "ASCII text" and doing `$ cat ARCHIVE.NETDATA.XMI` displays a a bunch of base64 type gibberish > we can assume this file has been encoded in base64
+
 2. to decrypt the file, run: `$ base64 -d ARCHIVE.NETDATA.XMI > ARCHIVE.NETDATA.decoded.XMI` 
 3. then: `$ file ARCHIVE.NETDATA.decoded.XMI` > this file is a **IBM NETDATA** file!
 4. Next, to find what type of file extension is the archive inside the XMI file, look up `extract netdata xmi`:
