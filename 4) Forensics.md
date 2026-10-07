@@ -122,7 +122,7 @@
 ### 🛠️ Tools
 
 1. `$ base64 -d [file] > [output]` (base64)
-2. google
+2. google (this is super useful)
 3. `$ xxd [file]` (Hex Editor)
 
 > or you can use other Hex Editors :)
