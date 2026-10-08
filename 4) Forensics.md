@@ -151,4 +151,10 @@
 12. now, we just use `john` to decrypt the hashes: `$ john --format=racf --wordlist=/usr/share/wordlists/rockyou.txt users_clean.txt` > `$ john --show users_clean.txt`
 13. in order to answer the last question, we must use the "best 64" john rules (curated set of 64 high-efficiency password mutation rules) > `$ john --format=RACF --wordlist=/usr/share/wordlists/rockyou.txt --rules=best64 users_clean.txt`
 
+<br>
 
+## 
+
+### 🛠️ Tools
+
+### The Book (Hard) Write-Up
