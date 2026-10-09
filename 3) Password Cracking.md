@@ -8,8 +8,10 @@ Use when given just a hash password :)
 ### 🛠️ Tools
 
 1. https://www.tunnelsup.com/hash-analyzer/ (Hash Analyzer/Identifier)
-2. `$ hashcat --identify ([hash] or [hashes.txt])` (Hash Analyzer/Identifier)
-3. `$ hashcat [hashes.txt] -m [hash mode] -a [attack type] [etc]` (Hashcat)
+2. https://hashes.com/en/tools/hash_identifier (Better Hash Identifier?)
+3. https://crackstation.net/ (CrackStation)
+4. `$ hashcat --identify ([hash] or [hashes.txt])` (Hash Analyzer/Identifier)
+5. `$ hashcat [hashes.txt] -m [hash mode] -a [attack type] [etc]` (Hashcat)
 	- Examples:
 		1. Dictionary Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 0 [path to dictionary]`
 		2. Brute Force Attack = `$ hashcat [hashes.txt] -m [hash mode] -a 3 [brute force]`
