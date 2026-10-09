@@ -206,7 +206,7 @@
 	2. Be sure to create or specify your OWN directory to output the file extraction to before running the command. Two files will be created there!!! > in `~/Desktop/volatility3/`, create a output folder by running: `$ mkdir output`
 	3. in this case, run: `$ ./vol.py -f ./memdump.mem -o ./output windows.dumpfiles --virtaddr 0xe0003e836f20`
 	4. once you open the `output` folder, you would get two extracted files like `file.0xe0003e836f20.0xe0003f47b990.DataSectionObject.black_book.db.dat` > lets open this database file using SQLite!!!
-	5. run: `$ sqlite ./output/file.0xe0003e836f20.0xe0003f47b990.DataSectionObject.black_book.db.dat`
+	5. run: `$ sqlite3 ./output/file.0xe0003e836f20.0xe0003f47b990.DataSectionObject.black_book.db.dat`
 	6. `sqlite> .tables` > `aliases` & `book`
 	7. `sqlite> SELECT * FROM aliases;`
 	8. `sqlite> SELECT * FROM book;`
