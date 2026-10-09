@@ -23,7 +23,7 @@ To find a specific set of notes, simply open the corresponding markdown file top
 | **1** | Open Source Intelligence (OSINT) | [View Notes](https://github.com/vincenthuynh1409/NCL-Notes/blob/main/Open%20Source%20Intelligence%20(OSINT).md) |
 | **2** | Cryptography | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Cryptography.md) |
 | **3** | Password Cracking | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/Password%20Cracking.md) |
-| **4** | Forensics | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/4)%20Forensics.md) |
+| **4** | Forensics | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/4\)%20Forensics.md) |
 | **5** | Log Analysis | 🚧 Coming Soon |
 | **6** | Network Traffic Analysis | 🚧 Coming Soon |
 | **7** | Scanning & Reconnaissance | 🚧 Coming Soon |
