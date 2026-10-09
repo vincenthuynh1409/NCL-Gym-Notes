@@ -4,7 +4,8 @@
 
 ### SSH (Easy) Write-Up
 
-![[Pasted image 20261009154853.png]]
+<img width="879" height="792" alt="image" src="https://github.com/user-attachments/assets/99f5d0e6-69b4-4416-bdd4-cfcc0d8e4946" />
+
 
 1. hostname = `myraptor`
 2. first IP address to attack the server = `169.139.243.218`
