@@ -153,8 +153,66 @@
 
 <br>
 
-## 
+## Memory Dumps
 
 ### 🛠️ Tools
 
+1. `$ 7z e [file]`
+2. Volatility
+	1. `$ ./vol.py -f ./memdump.mem windows.info.Info`
+	2. `$ ./vol.py -f ./memdump.mem windows.envars.Envars`
+	3. `$ ./vol.py -f ./memdump.mem windows.filescan.FileScan
+	4. `$ ./vol.py -f ./memdump.mem -o ./[output directory] windows.dumpfiles --virtaddr [file address]`
+3. `$ sqlite3 [database file]`
+4. https://crackstation.net/ (CrackStation)
+
 ### The Book (Hard) Write-Up
+
+- *We have obtained a live system memory dump from a hacker's computer before it fried itself. The hacker was looking at a suspicious document. Can you retrieve the lost information?: memdump.7z*
+
+1. download file > extract the .7z file by running: `$ 7z e memdump.yz` > you will receive a file called `memdump.mem` (Windows Event Trace Log) > OS = Windows!
+2. in order confirm this, print out the memory dump’s OS info by installing "Volatility3" and running it:
+	1. set up python virtual environment (recommended) by running: 
+		1. `python3 -m venv venv`
+		2. `source venv/bin/activate`
+	2. `$ git clone https://github.com/volatilityfoundation/volatility3.git`
+	3. `$ cd volatility3` > move the `memdump.mem` file into the `volatility3` directory by running `$ mv memdump.mem volatility3`
+	4. Run: `$ ./vol.py -f ./memdump.mem windows.info.Info`!!! > confirm windows OS!!!
+
+>[!WARNING]
+>The current version of Volatility3, when cloned from the Git repo, does not produce the output outlined in the walk-through below.
+>
+>The most recent working commit at the time of writing the walk-through was `2dbc06f9954dce33a102ae27bd44059f41d1d001`. Please use this to solve!
+>
+>1. `$ git checkout 2dbc06f9954dce33a102ae27bd44059f41d1d001`
+>2. `$ source ~/Desktop/venv/bin/activate`
+>3. `$ python -m pip install -e ".[full]"`
+
+3. now, to get the COMPUTER NAME and USER NAME, run: `$ ./vol.py -f ./memdump.mem windows.envars.Envars`
+	1. user = `liber8hacker`
+	2. computer name = `DESKTOP-OT97GG3`
+4. To find a file of interest, it would make sense to look in the user’s files. Use `grep` to find files with the user’s name found for a previous question: `$ ./vol.py -f ./memdump.mem windows.filescan.FileScan | grep "<AddUser'sName>"` .
+	1. `./vol.py -f ./memdump.mem windows.filescan.FileScan`: scan for all file objects present in the memory dump and list them out.
+	2. full file of interest path = `\Users\liber8hacker\Desktop\black_book.db-journal`!!!
+
+> `\Users\liber8hacker\Desktop\black_book.db-journal` is interesting because it points to a database associated with the user's Desktop, and the challenge is about recovering information the hacker viewed in a suspicious document.
+
+5. after looking up what a `black_book.db-journal` is, the file of interest is actually a **SQLite database file**. You can open the database file using tools such as "SQLite Browser" (already installed in Kali Linux) and peruse the database tables to identify the real name of the “cloud” user.
+6. Now, to extract the contents of the file:
+	1. use the command: `$ ./vol.py -f ./memdump.mem -o ./[output directory] windows.dumpfiles --virtaddr [file address]`
+		1.  `windows.dumpfiles.DumpFiles`: tells Volatility to extract the file content
+		2. `-o` : option specifies the directory to output the file extraction. 
+		3.  `--virtaddr`: option will reference the file address of the file of interest that you scanned in the previous step (the file address starts with `0xe000`). 
+	2. Be sure to create or specify your OWN directory to output the file extraction to before running the command. Two files will be created there!!! > in `~/Desktop/volatility3/`, create a output folder by running: `$ mkdir output`
+	3. in this case, run: `$ ./vol.py -f ./memdump.mem -o ./output windows.dumpfiles --virtaddr 0xe0003e836f20`
+	4. once you open the `output` folder, you would get two extracted files like `file.0xe0003e836f20.0xe0003f47b990.DataSectionObject.black_book.db.dat` > lets open this database file using SQLite!!!
+	5. run: `$ sqlite ./output/file.0xe0003e836f20.0xe0003f47b990.DataSectionObject.black_book.db.dat`
+	6. `sqlite> .tables` > `aliases` & `book`
+	7. `sqlite> SELECT * FROM aliases;`
+	8. `sqlite> SELECT * FROM book;`
+		1. matched "cloud" name = `gloria hampton`!!!
+	9. Lastly, to identify the password of the currently logged user, run: `$ ./vol.py -f ./memdump.mem windows.hashdump.Hashdump`
+		1. `windows.registry.hashdump.Hashdump`: option tells Volatility to extract all the NTLM hashes for the users present in the memory dump.
+	10. `liber8hacker` = `214a7d83f1c36a5f7071137d7c6e5ae6` (2nd set of hashes)
+	11. identify hash by using hashcat or [Hash Identifer](https://hashes.com/en/tools/hash_identifier) > NTLM hash!!!
+	12. use [CrackStation](https://crackstation.net/) to crack the NTLM hash  > `avatar2` is the password!!!!
