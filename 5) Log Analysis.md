@@ -38,6 +38,10 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 
 - *Analyze a custom application login event log to help us understand user behavior: login.log*
 
+<img width="161" height="419" alt="Screenshot 2026-10-10 150115" src="https://github.com/user-attachments/assets/2f9f3d7e-70a4-47ed-8c97-9bcf570c7937" />
+
+> Example Log Above :)
+
 1. to see many total login attempts were made in this log, there are THREE ways:
 	1. `$ wc -l login.log`
 	2. `$ head -n -0 login.log | wc -l`
@@ -86,6 +90,12 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 ### VSFTPD (Easy) Write-Up
 
 - *Analyze a vsftpd log file that we obtained: vsftpd.log*
+
+<img width="919" height="436" alt="Screenshot 2026-10-10 145902" src="https://github.com/user-attachments/assets/a5391e86-d4bb-44ea-b366-973476c262fd" />
+
+<img width="919" height="449" alt="Screenshot 2026-10-10 145944" src="https://github.com/user-attachments/assets/49cfe8f2-810b-4514-8178-587cabc30466" />
+
+> Example Log Above :)
 
 1. finding IP address "ftpuser" first logged in from: `$ cat vsftpd.log | grep 'ftpuser'`
 	1. `cat vsftpd.log`: displays ALL contents
