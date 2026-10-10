@@ -38,7 +38,8 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 
 - *Analyze a custom application login event log to help us understand user behavior: login.log*
 
-<img width="161" height="419" alt="Screenshot 2026-10-10 150115" src="https://github.com/user-attachments/assets/2f9f3d7e-70a4-47ed-8c97-9bcf570c7937" />
+<img width="634" height="874" alt="image" src="https://github.com/user-attachments/assets/52e2cd39-8dc4-4b27-bcaf-fa7e96d227fa" />
+
 
 > Example Log Above :)
 
