@@ -139,6 +139,7 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 9. finding the IP address of the suspicious login (the login with no subsequent activity): `$ cat vsftpd.log | awk '{print $12}' | sort | uniq -c` OR `$ cat vsftpd.log | grep 'OK LOGIN' | awk -F '"' '{print $2}' | sort | uniq`
 
 <br>
+
 ## Sysmon Logs from JSON file
 
 ### Sysmon (Easy) Write-Up
