@@ -138,3 +138,67 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 
 9. finding the IP address of the suspicious login (the login with no subsequent activity): `$ cat vsftpd.log | awk '{print $12}' | sort | uniq -c` OR `$ cat vsftpd.log | grep 'OK LOGIN' | awk -F '"' '{print $2}' | sort | uniq`
 
+<br>
+## Sysmon Logs from JSON file
+
+### Sysmon (Easy) Write-Up
+
+- *Here's a section of parsed Sysmon logs in a JSON format showing information about processes executed on a user’s computer.: processtree.json*
+
+<img width="922" height="389" alt="Screenshot 2026-10-10 150421" src="https://github.com/user-attachments/assets/faafc936-b682-4480-be66-d57639a50be5" />
+
+
+> Example log above :)
+
+1. finding name of the bootstrap executable downloaded via the browser: `$ cat processtree.json | grep -i '.exe' | grep -i 'http'`
+
+2. finding name of the main agent executable launched after the bootstrap runs: `$ cat processtree.json | grep -i 'agent'` > search for another agent executable (.exe) name that is not the previous one
+
+3. finding PowerShell cmdlet used to create the firewall rules for the agent’s traffic: `$ cat processtree.json | grep -i 'firewall'` > Every PowerShell cmdlet follows a strict "Verb-Noun" pattern separated by a hyphen (EX: `Get-Process` or `New-Service`) > `New-NetFirewallRule`!!!
+
+4. finding Windows program that is executed to likely verify that the agent is running > `taskmgr.exe` (Task Manager)
+
+5. finding the process ID of the executable used to enable Windows Defender: 
+	1. `$ cat processtree.json` > look for the first reference/instance of a "Defender" > look at the process ID (`process_id`) of that!
+
+```JSON
+{
+    "timestamp": "2024-07-15 09:02:59",
+    "process_name": "MpCmdRun.exe",
+    "process_id": 1704,
+    "parent_process_id": 7196,
+    "image": "C:\\Program Files\\Windows Defender\\mpcmdrun.exe",
+    "command_line": "\"C:\\Program Files\\Windows Defender\\mpcmdrun.exe\" -wdenable",
+    "md5": "B3676839B2EE96983F9ED735CD044159"
+}
+```
+
+6. finding many seconds after the last PowerShell firewall rule command was Defender enabled:
+	1. look the `timespamp` of the last time a command for a PowerShell firewall rule was enabled > `09:02:13`
+	2. look at the `timestamp` of the first time Windows Defender was enabled (from #5) > `09:02:59`
+	3. find # of seconds between each > subtract the seconds `59 - 13 = 46 seconds`! 
+
+```JSON
+ {
+    "timestamp": "2024-07-15 09:02:13",
+    "process_name": "powershell.exe",
+    "process_id": 7644,
+    "parent_process_id": 7184,
+    "image": "C:\\Windows\\Sysnative\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "command_line": "C:\\Windows\\Sysnative\\WindowsPowerShell\\v1.0\\powershell.exe -Command \"New-NetFirewallRule -DisplayName 'LayerAgent Service' -Name 'LayerAgent Service Command' -Direction Inbound -Program 'C:\\Program Files (x86)\\LayerAgent\\layer_agent_svc.exe' -Action Allow\"",
+    "md5": "04029E121A0CFA5991749937DD22A1D9"
+  }
+  
+  ...
+  
+  {
+    "timestamp": "2024-07-15 09:02:59",
+    "process_name": "MpCmdRun.exe",
+    "process_id": 1704,
+    "parent_process_id": 7196,
+    "image": "C:\\Program Files\\Windows Defender\\mpcmdrun.exe",
+    "command_line": "\"C:\\Program Files\\Windows Defender\\mpcmdrun.exe\" -wdenable",
+    "md5": "B3676839B2EE96983F9ED735CD044159"
+}
+```
+
