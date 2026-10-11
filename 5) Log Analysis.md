@@ -203,3 +203,44 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 }
 ```
 
+<br>
+
+## Nginx Log Analysis
+
+### Nginx (Medium) Write-Up
+
+- *Analyze a nginx access log: access.log*
+
+<img width="1848" height="847" alt="image" src="https://github.com/user-attachments/assets/93add60a-c72a-40d2-900b-55ded0931da5" />
+
+
+> Example log above
+
+1. finding how many different IP addresses reached the server (TWO ways): 
+	1. `$ cat access.log | awk -F '- -' '{print $1}' | sort | uniq | wc -l`
+	2. `$ cat access.log | cut -d ' ' -f 1 | sort | uniq | wc -l`
+
+2. finding how many requests yielded a 200 status: `$ cat access.log | cut -d '"' -f 3 | cut -d ' ' -f 2 | sort | uniq -c | sort -n`
+
+3. finding how many requests yielded a 400 status: `$ cat access.log | cut -d '"' -f 3 | cut -d ' ' -f 2 | sort | uniq -c | sort -n`
+
+4. finding IP address rang at the doorbell: `$ cat access.log | grep "bell"`
+
+5. finding version of the Googlebot visited the website: `$ cat access.log | grep "bot"`
+
+6. finding IP address attempted to exploit the shellshock vulnerability: 
+	1. look up "what does shellshock vulnerability look like in access log" > `() { :; };`
+	2. then run: `$ cat access.log | grep "() { :; };"`
+
+7. finding the most popular version of Firefox used for browsing the website: `$ cat access.log | grep -o "Firefox/.*" | sort | uniq -c`
+	1. `grep -o`: stands for "only matching" (instead of printing whole line, it only prints exact match)
+	2. `"Firefox/.*"`: the `.*` means match any character (`.`) any number of times (`*`).
+
+
+8.  finding the most common HTTP method used (TWO ways):
+	1. `$ cat access.log | cut -d ' ' -f 6 | sort | uniq -c | sort -n
+	2. `$ cat access.log | awk -F " " '{print $6}' | sort | uniq -c | sort -n
+
+9. finding many requests were for \x04\x01\x00P\xC6\xCE\x0Eu0\x00: `$ cat access.log | grep '\\x04\\x01\\x00P\\xC6\\xCE\\x0Eu0\\x00' | wc -l`
+
+<br>
