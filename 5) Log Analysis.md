@@ -262,6 +262,10 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 
 - *Analyze a Firefox SQLite history database: browser.sqlite*
 
+[Enter image Here]
+
+> Example log above
+
 1. finding what user searched for on craigslist:
 	1. `$ sqlite3 browser.sqlite`
 	2. first, display all the tables by running the `.tables` command: `sqlite> .tables`
@@ -305,7 +309,11 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 
 ### Squid (Hard) Write-Up
 
-- *Analyze this Squid proxy log: squid_access.log* 
+- *Analyze this Squid proxy log: squid_access.log*
+
+[Enter image Here]
+
+> Example log above
 
 1. In what year was this log saved?
 	1. display contents: `$ cat squid_access.log`
