@@ -245,3 +245,54 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 
 <br>
 
+## SQLite Database Log File Analysis
+
+### 🛠️ Tools & Commands
+
+1. https://sqliteviewer.app/ (SQLite Viewer App)
+2. https://beta.sqliteviewer.app/ (BETA - but better?)
+3. https://kb.mozillazine.org/Places.sqlite (SQLite wiki - help narrow down which tables to look through)
+4. `$ sqlite3 [file]`
+	1. `sqlite> .tables` = displays all the database tables available to view
+	2. `sqlite> SELECT * FROM [table name];` = views the information contained in the tables. (The `*` (wildcard) indicates to select all the columns, and the `;` (semicolon) at the end of the query signals the end of the query.
+	3. `sqlite> PRAGMA table_info([table name]);`= list of the columns in tables
+5. https://www.blockchain.com/explorer
+
+### History (Medium) Write-Up
+
+- *Analyze a Firefox SQLite history database: browser.sqlite*
+
+1. finding what user searched for on craigslist:
+	1. `$ sqlite3 browser.sqlite`
+	2. first, display all the tables by running the `.tables` command: `sqlite> .tables`
+	3. then list of the columns in the`sqlite> PRAGMA table_info(moz_places);`
+	4. looks like we go to "url" column, so to find what the user searched on craigslist, we can use SQL operators and run: `sqlite> select * from moz_places where url like '%bitcoin%';`
+	5. `http://baltimore.craigslist.org/search/sss?sort=rel&query=bitcoin`!!!
+
+2. finding current price of bitcoin when the user was browsing:
+	1. since we are trying to find a price, we can use the $ symbol, and since there isn't any in the "url" column, we can look at the "title" column.
+	2. `sqlite> select * from moz_places where title like '%$bitcoin$%';`
+	3. `https://www.bitstamp.net/|($239.5) Bitstamp - buy and sell bitcoins`
+
+3. finding Bitcoin exchange the user logged in to:
+	1. look through the urls: `sqlite> select url from moz_places;`
+	2. find where the user logs in > Coinbase!!!
+
+4. finding the email that was used to log into the exchange:
+	1. throughout the urls, we can see that the user uses a google email, so the email must have "gmail" > after searching with operators in the url column, we cannot find an email
+	2. we can try the "title" column next: `sqlite> select * from moz_places where title like '%gmail%';` 
+	3. `b1gbird@gmail.com`
+
+5. finding the ID of the Bitcoin transaction that the user looked at:
+	1. `sqlite> select * from moz_places where url like '%transaction%';`
+	2. after doing those operations, we can find one result which shows the transaction ID! > `https://www.coinbase.com/network/transactions/5274cfba585a4b5681527a37f95c76340428916bb7480cef6c545f0a28dcd2d7` > transaction ID = `5274cfba585a4b5681527a37f95c76340428916bb7480cef6c545f0a28dcd2d7`
+
+6. finding the total BTC of all the inputs of the Bitcoin transaction:
+	1.   https://www.blockchain.com/explorer > search up the transaction ID from #5: `5274cfba585a4b5681527a37f95c76340428916bb7480cef6c545f0a28dcd2d7` > click "BTC" > look at "advanced details" > find "Input Value"
+	2. `0.22616302 BTC`
+
+7. finding bitcoin address receiving the majority of the Bitcoin in the transaction:
+	1. on the "Overview" section (continuing from #6), we can see the "to" and "from" bitcoin transactions > looking at the "to" (which is the receiving end of the bitcoin transaction), we should look for the address that is receiving the MOST money > `18z6bTFjxkXCmhfp8YBetR2wgmoVjXGJZz`
+
+
+
