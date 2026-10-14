@@ -294,5 +294,46 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 7. finding bitcoin address receiving the majority of the Bitcoin in the transaction:
 	1. on the "Overview" section (continuing from #6), we can see the "to" and "from" bitcoin transactions > looking at the "to" (which is the receiving end of the bitcoin transaction), we should look for the address that is receiving the MOST money > `18z6bTFjxkXCmhfp8YBetR2wgmoVjXGJZz`
 
+<br>
+
+## Squid Proxy Log Analysis 
+
+### 🛠️ Tools & Commands
+
+1. https://www.epochconverter.com/ (Epoch Date Converter)
+2. https://wiki.squid-cache.org/Features/LogFormat (Squid Log Format)
+
+### Squid (Hard) Write-Up
+
+- *Analyze this Squid proxy log: squid_access.log* 
+
+1. In what year was this log saved?
+	1. display contents: `$ cat squid_access.log`
+	2. usually the first field on the log is the date, but it looks like it is using epoch time format > to convert this, we can use online epoch converter (https://www.epochconverter.com/)
+
+2. How many milliseconds did the fastest request take?
+	1. looking up the format of a squid log ([https://wiki.squid-cache.org/Features/LogFormat](https://wiki.squid-cache.org/Features/LogFormat)) shows that the field (2nd one) after the timestamp represents the time spent in milliseconds!
+	2. `$ cat squid_access.log | awk -F ' ' '{print $2}' |  sort -rn`
+
+3. How many milliseconds did the longest request take?
+	1. `$ cat squid_access.log | awk -F ' ' '{print $2}' | sort -n`
+
+4. How many different IP addresses did the proxy service in this log?
+	1. `$ cat squid_access.log | awk -F ' ' '{print $3}' | sort | uniq | wc -l`
+
+5. How many GET requests were made?
+	1. `$ cat squid_access.log | awk -F ' ' '{print $6}' | grep "GET" | wc -l`
+
+6. How many POST requests were made?
+	1. `$ cat squid_access.log | awk -F ' ' '{print $6}' | grep "POST" | wc -l`
+
+7. What company created the antivirus used on the host at 192.168.0.224?
+	1. `$ cat squid_access.log | grep "192.168.0.224"`
+	2. The antivirus is using "Symantec Live Update", which downloads updates for Symantec/Norton antivirus products! > Symantec
+
+8. What url is used to download an antivirus update?
+	1. `$ cat squid_access.log | grep "192.168.0.224"` > `http://liveupdate.symantecliveupdate.com/streaming/norton$202009$20streaming$20virus$20definitions_1.0_symalllanguages_livetri.zip`
+
+
 
 
