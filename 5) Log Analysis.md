@@ -339,6 +339,48 @@ Oct 11 10:36:59 myraptor sshd[30005]: pam_unix(sshd:session): session opened for
 8. What url is used to download an antivirus update?
 	1. `$ cat squid_access.log | grep "192.168.0.224"` > `http://liveupdate.symantecliveupdate.com/streaming/norton$202009$20streaming$20virus$20definitions_1.0_symalllanguages_livetri.zip`
 
+<br>
+
+## SOAP Web Server Log Analysis
+
+### 🛠️ Tools
+
+1. https://www.convertcsv.com/xml-to-csv.htm (XML to CSV converter)
+2. Google Spreadsheets
+
+### Payments (Hard) Write-Up
+
+- *A payment transaction log was compromised in a data breach. Help us determine what information was stolen: payments.log* 
+
+> SOAP is used to send messages using the Extensible Markup Language (XML). Solving this challenge requires a mechanism to parse the XML and query the underlying data. This can be done by extracting the relevant XML from the log file, converting the XML to CSV format, and then using a spreadsheet editor to query the data.
+
+<img width="1546" height="861" alt="image" src="https://github.com/user-attachments/assets/3c923b52-ecf5-402a-8a46-57bb051092f6" />
+
+
+> Example log above
+
+Before we answer any of the questions, we have to first convert the XML file we downloaded to a CSV file > spreadsheet!
+1. download the file given in the challenge
+2. extract the XML and parse the entries for requests and responses by running:
+	1. `$ sed -nr 's/PPAPIService: Request: (.*)/\1/p' payments.log > requests.xml`
+	2. `$ sed -nr 's/PPAPIService: Response: <\?.*\?>(.*)/\1/p' payments.log > responses.xml`
+3. after, you should get a `requests.xml` and `responses.xml` file. Now, to convert it from XML to CSV, you will need to add `<xml>` to the beginning and `</xml>` to the end of your XML file (and make sure to click SAVE) so it can be recognized properly by your CSV converter
+4. https://www.convertcsv.com/xml-to-csv.htm > convert XML files to CSV! :D 
+
+Now, since we have the spreadsheet, we are able to answer the questions:
+
+1. How many transactions are contained in the log?
+	1. open/import both the `requests.xml` and `responses.xml` file into Google Spreadsheets and count each line EXCLUDING the header (first row)!
+
+2. What is the transaction ID of the largest purchase made in the log?
+	1. open/import both the `requests.xml` and `responses.xml` file into Google Spreadsheets > one in one window/tab and one in another
+	2. in the `requests.xml` spreadsheet, the first row is the headers and below is the transactions! > since you want to find the largest purchase, look for the column/header that indicates a price > `Body/DoDirectPaymentReq/DoDirectPaymentRequest/DoDirectPaymentRequestDetails/PaymentDetails/OrderTotal/__text` > `OrderTotal`!
+	3. sort that column from Z-A > right click column letter > "Create Filter" > Sort Z-A > find the largest price, then copy it > unsort by doing `CTRL+Z` > then use `CTRL+F` to find that price, and for this example it is `998.6` > note down the original row the price was in! (in this case, row 53)
+	4. then, go to your `responses.csv` spreadsheet and find transaction ID header > `Body/DoDirectPaymentResponse/TransactionID` (used `CTRL+F`) > match the row from "requests" (53) with the corresponding row in "responses" (53) in the Transaction ID header/column > get the ID: `3a4da8c8-6934-4655-9ec5-335ab4540a2b`
+
+3. Which state made the greatest number of purchases?
+	1. on "requests" spreadsheet, find the states header/column (`Body/DoDirectPaymentReq/DoDirectPaymentRequest/DoDirectPaymentRequestDetails/PaymentDetails/ShipToAddress/StateOrProvince/__text`)
+	2. right click on the column header letter > click on "Column Stats" > find the state with the greatest number of purchases!
 
 
 
