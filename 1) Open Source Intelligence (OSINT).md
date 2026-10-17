@@ -182,6 +182,8 @@ There are public databases that store records of public keys and their owners so
 
 <img width="1482" height="546" alt="image" src="https://github.com/user-attachments/assets/b80b3324-fb35-4f85-bafd-17a4b7026ae5" />
 
+> Examples above :)
+
 <br>
 
 ## 🛠️ Extra Tools
