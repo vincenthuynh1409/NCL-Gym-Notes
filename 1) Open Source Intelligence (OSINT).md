@@ -182,3 +182,26 @@ There are public databases that store records of public keys and their owners so
 
 <img width="1482" height="546" alt="image" src="https://github.com/user-attachments/assets/b80b3324-fb35-4f85-bafd-17a4b7026ae5" />
 
+<br>
+
+## 🛠️ Extra Tools
+
+1. `$ ipcalc [IP address]` (OSINT for IP addresses)
+
+```
+Address:   10.6.20.0
+Netmask:   255.255.255.0
+Network:   10.6.20.0/24
+HostMin:   10.6.20.1
+HostMax:   10.6.20.254
+Broadcast: 10.6.20.255
+Hosts/Net: 254
+```
+
+- **Network** = beginning of the subnet
+- **HostMin** = first usable IP
+- **HostMax** = last usable IP
+- **Broadcast** = special address at the end; normally not assignable to a host
+- **Hosts/Net** = number of usable host addresses
+
+
