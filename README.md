@@ -2,7 +2,7 @@
 
 ## 👋 Introduction:
 
-This is my **personal cybersecurity study notes** from **National Cyber League Gymnasium** practice, covering **tools, commands, techniques,** and **problem-solving strategies** across **Open Source Intelligence, Cryptography, Log Analysis, Network Traffic Analysis, Scanning & Reconnaissance, Forensics, Password Cracking, Enumeration & Exploitation,** and **Web Application Security.** :)
+This is my **personal cybersecurity study notes** from **National Cyber League (NCL) Gymnasium** practice, covering **tools, commands, techniques,** and **problem-solving strategies** across **Open Source Intelligence, Cryptography, Log Analysis, Network Traffic Analysis, Scanning & Reconnaissance, Forensics, Password Cracking, Enumeration & Exploitation,** and **Web Application Security.** :)
 
 > [!IMPORTANT]  
 > Challenge write-ups in this repository are exclusively from the National Cyber League (NCL) Practice Gymnasium and are maintained solely for my personal learning, reference, and knowledge development.
