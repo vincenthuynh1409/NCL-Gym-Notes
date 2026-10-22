@@ -65,6 +65,49 @@ Use when given just a hash password :)
 
 <br>
 
+## NTLM Password Cracking
+
+**Windows NTLM** is an authentication system that uses a hash of a user's password instead of storing the plaintext password.
+
+**NT hash** = newer Windows password hash.  
+**LM hash** = older, weaker Windows password hash.
+
+Ophcrack uses rainbow tables to try to match these hashes back to possible passwords.
+
+### 🛠️ Tools
+
+1. Ophcrack (pre-installed in Kali Linux)
+	1. https://ophcrack.sourceforge.io/tables.php (table downloads)
+
+### Rainbow Tables (Easy) Write-Up
+
+Before doing anything, we should download the rainbow table wordlists and set up the tool in order to use "Ophcrack"! 
+1. Open up Kali Linux and on the top left, click the kali logo, and search up "Ophcrack" (open the tool)
+
+<img width="1443" height="757" alt="image" src="https://github.com/user-attachments/assets/c0e1a81b-7d39-4b54-899d-771fbf47aaab" />
+
+
+2. Go to https://ophcrack.sourceforge.io/tables.php and you can see all the downloadable tables for Ophcrack! > we are going to be using the "xp_free_fast" table! (The download will take a while)
+3. once downloaded (it will be a zip file), drag it into your kali linux machine and move that zipped file into `/usr/share/wordlists` > to keep things organized we have to unzip all the files into a separate folder, so run:  `$ sudo unzip tables_xp_free_fast.zip -d xp_free_fast`
+4. once you finished creating the table in the wordlist, go back home and create a text file with the hashes (separated by line):
+```
+3DD1FBC27831C5F37C3113B4A1A5E3A0:AFEFFCDAAF0662AD320CEB423C9A160D
+FA4F6C499D7A1598BB738DDACC45834C:BAE8A18E6A5CA516465279CCA50E8D36
+B253395EF2B08A3C5D066BE4D31DBA16:64757A073C44C714F6FE0F07E11F9082
+FA8A4C51567993309C5014AE4718A7EE:1F4FD09BE84B20FE891FB93A60F61499
+DBC12B38AA32A681F58CFA8E98E4E5B6:86178E8EADE411AF3DB1446D8082289F
+93AF3851019BC8C793E28745B8BF4BA6:506DD82C015DEEE0CDDDC5DAC449E1AB
+```
+5. open up Ophcrack, click "Tables" > click the first option which is the table we downloaded called "xp_free_fast" > click "Install" > locate the `/usr/share/wordlists/xp_free_fast` folder (it will be in "+ Other Locations" > "Computer") and press "Open"
+6. once the table is installed, go to "Load" > navigate to your text file containing all the password hashes that are needed to be cracked > press "Crack"!!!
+
+<img width="814" height="636" alt="image" src="https://github.com/user-attachments/assets/29b0e5eb-a420-498f-99ab-cbb478ed38a0" />
+
+
+> Example above!
+
+<br>
+
 ## /etc/shadow
 
 Example Full Shadow Entry:
