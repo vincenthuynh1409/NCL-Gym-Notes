@@ -382,5 +382,279 @@ Now, since we have the spreadsheet, we are able to answer the questions:
 	1. on "requests" spreadsheet, find the states header/column (`Body/DoDirectPaymentReq/DoDirectPaymentRequest/DoDirectPaymentRequestDetails/PaymentDetails/ShipToAddress/StateOrProvince/__text`)
 	2. right click on the column header letter > click on "Column Stats" > find the state with the greatest number of purchases!
 
+<br>
 
+## Custom File Format Log Analysis
+
+### Custom File Format (Hard) Write-Up
+
+- *We need to analyze a custom log format that we use to monitor data transfers on a secure network. Unfortunately, the parser was not committed to our code repository, but we do have a copy of the file format spec. See if you can use it and help us answer questions about the log file. Provide all date/timestamps as UTC: Custom File Format.sky*
+
+To answer all the questions all in one without creating any additional files or converting in cyberchef, I created a python script for this challenge:
+
+> I also renamed `Custom File Format.sky` to just `file.sky` so its easier.
+
+```python
+import struct
+import socket
+import base64
+from datetime import datetime, timezone
+from collections import defaultdict
+
+FILE = "file.sky"
+
+with open(FILE, "rb") as f:
+    data = f.read()
+
+offset = 0
+
+# ----- HEADER -----
+
+magic = data[offset:offset+8]
+offset += 8
+
+version = data[offset]
+offset += 1
+
+created = struct.unpack(">I", dimport struct
+import socket
+import base64
+from datetime import datetime, timezone
+from collections import defaultdict
+
+FILE = "file.sky"
+
+with open(FILE, "rb") as f:
+    data = f.read()
+
+offset = 0
+
+# ----- HEADER -----
+
+magic = data[offset:offset+8]
+offset += 8
+
+version = data[offset]
+offset += 1
+
+created = struct.unpack(">I", data[offset:offset+4])[0]
+offset += 4
+
+hostname_len = struct.unpack(">I", data[offset:offset+4])[0]
+offset += 4
+
+hostname = data[offset:offset+hostname_len].decode()
+offset += hostname_len
+
+flag_len = struct.unpack(">I", data[offset:offset+4])[0]
+offset += 4
+
+flag_raw = data[offset:offset+flag_len]
+offset += flag_len
+
+num_entries = struct.unpack(">I", data[offset:offset+4])[0]
+offset += 4
+
+# Decode the Base64 flag
+try:
+    flag = base64.b64decode(flag_raw).decode()
+except:
+    flag = flag_raw.decode(errors="replace")
+    
+print("=== HEADER ===")
+print("Magic:", magic.hex())
+print("Version:", version)
+print("Created:", datetime.fromtimestamp(created, timezone.utc))
+print("Hostname:", hostname)
+print("Flag:", flag)
+print("Entries:", num_entries)
+
+# ----- BODY -----
+
+entries = []
+
+for i in range(num_entries):
+
+    source_raw, dest_raw, timestamp, transferred = struct.unpack(
+        ">IIII", data[offset:offset+16]
+    )
+
+    offset += 16
+
+    source = socket.inet_ntoa(struct.pack(">I", source_raw))
+    destination = socket.inet_ntoa(struct.pack(">I", dest_raw))
+
+    dt = datetime.fromtimestamp(timestamp, timezone.utc)
+
+    entries.append({
+        "source": source,
+        "destination": destination,
+        "timestamp": dt,
+        "bytes": transferred
+    })
+
+print("\nParsed", len(entries), "entries.")
+
+# Total bytes transferred
+total_bytes = sum(e["bytes"] for e in entries)
+
+# Unique IP addresses
+unique_ips = set()
+
+for e in entries:
+    unique_ips.add(e["source"])
+    unique_ips.add(e["destination"])
+
+# Bytes sent by each SOURCE IP
+bytes_by_source = defaultdict(int)
+
+for e in entries:
+    bytes_by_source[e["source"]] += e["bytes"]
+
+top_ip, top_bytes = max(
+    bytes_by_source.items(),
+    key=lambda x: x[1]
+)
+ 
+# Bytes transferred per UTC day
+bytes_by_day = defaultdict(int)
+
+for e in entries:
+    day = e["timestamp"].strftime("%Y-%m-%d")
+    bytes_by_day[day] += e["bytes"]
+
+busiest_day, busiest_bytes = max(
+    bytes_by_day.items(),
+    key=lambda x: x[1]
+)
+ 
+print("\n=== ANSWERS ===")
+print("Total transferred bytes:", total_bytes)
+print("Unique IP addresses:", len(unique_ips))
+print("IP that sent the most data:", top_ip)
+print("Bytes sent by that IP:", top_bytes)
+print("Busiest day:", busiest_day)
+print("Bytes transferred that day:", busiest_bytes)
+
+
+```
+
+Basically, the script reads the binary SKY log file then calculates the statistics
+
+1. **Imports tools** for reading binary data, IP addresses, Base64, and UTC timestamps.
+
+2. **Opens `file.sky`** in binary mode and reads all the data.
+
+3. **Uses `offset`** to keep track of its current position in the file.
+
+4. **Reads the header:**
+    - Magic bytes
+    - Version
+    - Creation timestamp
+    - Hostname
+    - Flag
+    - Number of entries
+
+5. **Decodes the flag** from Base64.
+
+6. **Reads each network entry** (16 bytes each):
+    ```
+    4 bytes → Source IP
+    4 bytes → Destination IP
+    4 bytes → Timestamp
+    4 bytes → Bytes transferred
+    ```
+7. **Converts the data** into readable IP addresses and UTC dates.
+
+8. **Calculates:**
+    - Total bytes transferred
+    - Number of unique IPs
+    - IP that sent the most data
+    - Busiest UTC day
+
+To answer the final challenge questions, simply run: `$ python file.sky`
+
+### Alternative way to solve "Custom File Format" (manually):
+
+1. Open CyberChef, and click "Open file as input" > open the `Custom File Formay.sky` file
+2. This [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(59,2592,false\)To_Hex\('None',16\)Fork\('%5C%5Cn','%5C%5Cn',false\)Subsection\('.%7B8%7D',true,true,false\)Find_/_Replace\(%7B'option':'Regex','string':'$'%7D,'%20',true,false,true,false\)Merge\(\)) can be used to create a column-formatted hex version of the log > save this result into your machine into a file called `hex.log`.
+3. Once the log file is in a text format, it becomes easier to convert the data one column at a time and then rejoin the columns into an actual log!
+
+4. Extract the first column from hex.log
+	1. Convert the hex values into IPv4 addresses [using cyberchef](https://gchq.github.io/CyberChef/#recipe=Change_IP_format\('Hex','Dotted%20Decimal'\)&input=ZTVkNDE1ZDQKZTVkNDE1ZDQKYjhlZTAwMjAKYWY4NjM0NzEKNGRmZjI1M2MKNGRmZjI1M2MKYjE4NGUwZGQKZTVkNDE1ZDQKNThhYjY1ZWYKZTAzYTA3ODgKZjdjZDUwMTcKOGY2ZTIzZjAKZjdjZDUwMTcKODlkODZiNTAKNThhYjY1ZWYKNGRmZjI1M2MKNGRmZjI1M2MKNThhYjY1ZWYKMzJjN2NjYjcKYWJlOTZhNzUKODlkODZiNTAKZTVkNDE1ZDQKMTc2NTJmNjMKZTVkNDE1ZDQKYWY4NjM0NzEKYWJlOTZhNzUKMzJjN2NjYjcKZjdjZDUwMTcKMTc2NTJmNjMKODlkODZiNTAKYWY4NjM0NzEKZTVkNDE1ZDQKMTc2NTJmNjMKZTVkNDE1ZDQKNGRmZjI1M2MKZTVkNDE1ZDQKYWJlOTZhNzUKZTVkNDE1ZDQKYWJlOTZhNzUKZTVkNDE1ZDQKZTVkNDE1ZDQKNGRmZjI1M2MKNGRmZjI1M2MKODlkODZiNTAKYWY4NjM0NzEKYWJlOTZhNzUKZjdjZDUwMTcKNThhYjY1ZWYKOGY2ZTIzZjAKMTc2NTJmNjMKNThhYjY1ZWYKYWY4NjM0NzEKZTVkNDE1ZDQKODlkODZiNTAKYjhlZTAwMjAKOGY2ZTIzZjAKZTVkNDE1ZDQKNThhYjY1ZWYKOGY2ZTIzZjAKZjdjZDUwMTcKYjE4NGUwZGQKNGRmZjI1M2MKZTAzYTA3ODgKNGRmZjI1M2MKMzJjN2NjYjcKYWJlOTZhNzUKYWY4NjM0NzEKMTc2NTJmNjMKMzJjN2NjYjcKYWY4NjM0NzEKZjdjZDUwMTcKNGRmZjI1M2MKYWJlOTZhNzUKOGY2ZTIzZjAKNGRmZjI1M2MKYWY4NjM0NzEKZjdjZDUwMTcKYWJlOTZhNzUKODlkODZiNTAKODlkODZiNTAKNThhYjY1ZWYKYWJlOTZhNzUKNThhYjY1ZWYKNGRmZjI1M2MKODlkODZiNTAKYjE4NGUwZGQKZjdjZDUwMTcKZTAzYTA3ODgKMTc2NTJmNjMKMzJjN2NjYjcKYjE4NGUwZGQKMTc2NTJmNjMKNGRmZjI1M2MKYWJlOTZhNzUKZTVkNDE1ZDQKODlkODZiNTAKZTAzYTA3ODgKMzJjN2NjYjcKZTAzYTA3ODgKOGY2ZTIzZjAKOGY2ZTIzZjAKMzJjN2NjYjcKYWJlOTZhNzUKMzJjN2NjYjcKZTAzYTA3ODgKOGY2ZTIzZjAKZTAzYTA3ODgKNThhYjY1ZWYKZTVkNDE1ZDQKZTVkNDE1ZDQKYjE4NGUwZGQKODlkODZiNTAKYWY4NjM0NzEKZTVkNDE1ZDQKZjdjZDUwMTcKMTc2NTJmNjMKNThhYjY1ZWYKZTAzYTA3ODgKOGY2ZTIzZjAKZjdjZDUwMTcKYWJlOTZhNzUKYjhlZTAwMjAKMTc2NTJmNjMKYWJlOTZhNzUKZTVkNDE1ZDQKYjE4NGUwZGQKOGY2ZTIzZjAKZTVkNDE1ZDQKMTc2NTJmNjMKYjE4NGUwZGQKYWJlOTZhNzUKZTVkNDE1ZDQKZTVkNDE1ZDQKYWJlOTZhNzUKZTVkNDE1ZDQKYjE4NGUwZGQKZTAzYTA3ODgKZTAzYTA3ODgKNThhYjY1ZWYKOGY2ZTIzZjAKYWY4NjM0NzEKZTVkNDE1ZDQKYWY4NjM0NzEKZjdjZDUwMTcKZTVkNDE1ZDQKODlkODZiNTAKOGY2ZTIzZjAKZTVkNDE1ZDQKNThhYjY1ZWYKYjE4NGUwZGQKYWY4NjM0NzEKNThhYjY1ZWYKYjE4NGUwZGQKNGRmZjI1M2MKODlkODZiNTAKMTc2NTJmNjMKNThhYjY1ZWYKZTVkNDE1ZDQKYjhlZTAwMjAKYjE4NGUwZGQKZjdjZDUwMTcKYWJlOTZhNzUK)
+	2. Save the results to a file named `col1.log`
+
+```bash
+cat hex.log | cut -d " " -f 1
+```
+
+4. Extract the second column from` hex.log`
+	1. Convert the hex values into IPv4 addresses [using cyberchef](https://gchq.github.io/CyberChef/#recipe=Change_IP_format\('Hex','Dotted%20Decimal'\)&input=ZTVkNDE1ZDQKZTVkNDE1ZDQKYjhlZTAwMjAKYWY4NjM0NzEKNGRmZjI1M2MKNGRmZjI1M2MKYjE4NGUwZGQKZTVkNDE1ZDQKNThhYjY1ZWYKZTAzYTA3ODgKZjdjZDUwMTcKOGY2ZTIzZjAKZjdjZDUwMTcKODlkODZiNTAKNThhYjY1ZWYKNGRmZjI1M2MKNGRmZjI1M2MKNThhYjY1ZWYKMzJjN2NjYjcKYWJlOTZhNzUKODlkODZiNTAKZTVkNDE1ZDQKMTc2NTJmNjMKZTVkNDE1ZDQKYWY4NjM0NzEKYWJlOTZhNzUKMzJjN2NjYjcKZjdjZDUwMTcKMTc2NTJmNjMKODlkODZiNTAKYWY4NjM0NzEKZTVkNDE1ZDQKMTc2NTJmNjMKZTVkNDE1ZDQKNGRmZjI1M2MKZTVkNDE1ZDQKYWJlOTZhNzUKZTVkNDE1ZDQKYWJlOTZhNzUKZTVkNDE1ZDQKZTVkNDE1ZDQKNGRmZjI1M2MKNGRmZjI1M2MKODlkODZiNTAKYWY4NjM0NzEKYWJlOTZhNzUKZjdjZDUwMTcKNThhYjY1ZWYKOGY2ZTIzZjAKMTc2NTJmNjMKNThhYjY1ZWYKYWY4NjM0NzEKZTVkNDE1ZDQKODlkODZiNTAKYjhlZTAwMjAKOGY2ZTIzZjAKZTVkNDE1ZDQKNThhYjY1ZWYKOGY2ZTIzZjAKZjdjZDUwMTcKYjE4NGUwZGQKNGRmZjI1M2MKZTAzYTA3ODgKNGRmZjI1M2MKMzJjN2NjYjcKYWJlOTZhNzUKYWY4NjM0NzEKMTc2NTJmNjMKMzJjN2NjYjcKYWY4NjM0NzEKZjdjZDUwMTcKNGRmZjI1M2MKYWJlOTZhNzUKOGY2ZTIzZjAKNGRmZjI1M2MKYWY4NjM0NzEKZjdjZDUwMTcKYWJlOTZhNzUKODlkODZiNTAKODlkODZiNTAKNThhYjY1ZWYKYWJlOTZhNzUKNThhYjY1ZWYKNGRmZjI1M2MKODlkODZiNTAKYjE4NGUwZGQKZjdjZDUwMTcKZTAzYTA3ODgKMTc2NTJmNjMKMzJjN2NjYjcKYjE4NGUwZGQKMTc2NTJmNjMKNGRmZjI1M2MKYWJlOTZhNzUKZTVkNDE1ZDQKODlkODZiNTAKZTAzYTA3ODgKMzJjN2NjYjcKZTAzYTA3ODgKOGY2ZTIzZjAKOGY2ZTIzZjAKMzJjN2NjYjcKYWJlOTZhNzUKMzJjN2NjYjcKZTAzYTA3ODgKOGY2ZTIzZjAKZTAzYTA3ODgKNThhYjY1ZWYKZTVkNDE1ZDQKZTVkNDE1ZDQKYjE4NGUwZGQKODlkODZiNTAKYWY4NjM0NzEKZTVkNDE1ZDQKZjdjZDUwMTcKMTc2NTJmNjMKNThhYjY1ZWYKZTAzYTA3ODgKOGY2ZTIzZjAKZjdjZDUwMTcKYWJlOTZhNzUKYjhlZTAwMjAKMTc2NTJmNjMKYWJlOTZhNzUKZTVkNDE1ZDQKYjE4NGUwZGQKOGY2ZTIzZjAKZTVkNDE1ZDQKMTc2NTJmNjMKYjE4NGUwZGQKYWJlOTZhNzUKZTVkNDE1ZDQKZTVkNDE1ZDQKYWJlOTZhNzUKZTVkNDE1ZDQKYjE4NGUwZGQKZTAzYTA3ODgKZTAzYTA3ODgKNThhYjY1ZWYKOGY2ZTIzZjAKYWY4NjM0NzEKZTVkNDE1ZDQKYWY4NjM0NzEKZjdjZDUwMTcKZTVkNDE1ZDQKODlkODZiNTAKOGY2ZTIzZjAKZTVkNDE1ZDQKNThhYjY1ZWYKYjE4NGUwZGQKYWY4NjM0NzEKNThhYjY1ZWYKYjE4NGUwZGQKNGRmZjI1M2MKODlkODZiNTAKMTc2NTJmNjMKNThhYjY1ZWYKZTVkNDE1ZDQKYjhlZTAwMjAKYjE4NGUwZGQKZjdjZDUwMTcKYWJlOTZhNzUK)
+	2. Save the results to a file named `col2.log`
+
+```bash
+cat hex.log | cut -d " " -f 2
+```
+
+5. Extract the third column from `hex.log`
+	1. Convert the hex values into dates [using cyberchef](https://gchq.github.io/CyberChef/#recipe=Fork\('%5C%5Cn','%5C%5Cn',false\)From_Base\(16\)Translate_DateTime_Format\('UNIX%20timestamp%20\(seconds\)','X','UTC','DD-MM-YYYY%20','UTC'\))
+	2. Save the results to a file named `col3.log`
+
+```bash
+cat hex.log | cut -d " " -f 3
+```
+
+6. Extract the fourth column from `hex.log`
+	3. Convert the hex values into integers [using cyberchef](https://gchq.github.io/CyberChef/#recipe=Fork\('%5C%5Cn','%5C%5Cn',false\)From_Base\(16\))
+	4. Save the results to a file named `col4.log`
+
+```bash
+cat hex.log | cut -d " " -f 4
+```
+
+7. Combine and merge the logs into a single file named `merged.log`
+
+```bash
+paste col1.log col2.log col3.log col4.log > merged.log
+```
+
+1. What is the hostname of the server?
+	1. Calculate the length of the hostname, which is represented as a 4-byte integer at offset 13. Use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(13,4,false\)To_Binary\('None',8\)From_Base\(2\)) to calculate the length of the hostname, which is 14.
+	2. Extract the hostname, which is an ASCII string of length 14 at offset 17. Use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(17,14,false\)) to extract the hostname.
+
+2. What is the plaintext flag in the log file?
+	1. Calculate the length of the flag, which is represented as a 4-byte integer at offset 31. 
+	2. Use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(31,4,false\)To_Binary\('None',8\)From_Base\(2\)) to calculate the length of the flag, which is 20.
+	3. Extract the flag, which is an ASCII string of length 20 at offset 35 > Then, perform a base64 decode. Use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(35,20,false\)From_Base64\('A-Za-z0-9%2B/%3D',true\)) to extract the flag.
+
+3. On what date was the file created (in UTC)?
+	1. The date is a 4-byte timestamp at offset 9. 
+	2. Use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(9,4,false\)To_Binary\('None',8\)From_Base\(2\)From_UNIX_Timestamp\('Seconds%20\(s\)'\)) to extract the timestamp.
+
+4. How many entries are in the log file?
+	1. The number of entries is a 4-byte integer at offset 55. 
+	2. Use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(55,4,false\)To_Binary\('None',8\)From_Base\(2\)) to extract the number of entries.
+
+5. How many total transferred bytes were recorded in the log?
+	1. You can use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(59,2592,false\)To_Hex\('Space',16\)Fork\('%5C%5Cn','%5C%5Cn',false\)From_Hex\('Space'\)Take_bytes\(12,4,false\)To_Hex\('None',0\)From_Base\(16\)Merge\(\)Sum\('Line%20feed'\)) to calculate the total transferred bytes. (This recipe extracts the bytes for the entries, splits the data into 16-byte lines (one line per entry), extracts just the number of bytes transferred as an integer value, and then sums the total amounts.)
+
+6. How many unique IP addresses (both senders and receivers) are recorded?
+	1. You can use this [cyberchef recipe](https://cyberchef.io/#recipe=Take_bytes\(59,2592,false\)To_Hex\('Space',16\)Fork\('%5C%5Cn','%5C%5Cn',false\)From_Hex\('Space'\)Take_bytes\(0,8,false\)To_Hex\('None',4\)Change_IP_format\('Hex','Dotted%20Decimal'\)Merge\(\)Unique\('Line%20feed',false\)Regular_expression\('IPv4%20address','\(?:\(?:%5C%5Cd%7C%5B01%5D?%5C%5Cd%5C%5Cd%7C2%5B0-4%5D%5C%5Cd%7C25%5B0-5%5D\)%5C%5C.\)%7B3%7D\(?:25%5B0-5%5D%7C2%5B0-4%5D%5C%5Cd%7C%5B01%5D?%5C%5Cd%5C%5Cd%7C%5C%5Cd\)\(?:%5C%5C/%5C%5Cd%7B1,2%7D\)?',true,true,false,false,false,true,'List%20matches'\)) to calculate the number of unique IP addresses. (This recipe extracts the bytes for the entries, splits the data into 16-byte lines (one line per entry), extracts the source + destination IP addresses, splits those into 4-byte lines (one line per IP address), converts each line into a human-readable IP addresses, and then gets a count of the number of unique IP addresses.)
+
+7. Which IP address sent the most amount of data?
+	1. Use `awk` to parse the log!
+
+```bash
+awk '{sums[$1]+=$4} END {for (ip in sums) print sums[ip], ip}' merged.log  | sort -n
+```
+
+> Create a hashtable where the keys are the source IP addresses (column 1), sum the number of bytes transferred (column 4) for each source IP address, print the result, and then sort by the most bytes transferred.
+
+8. What was the busiest day (day with the most bytes transferred)?
+
+```bash
+awk '{sums[$3]+=$4} END {for (date in sums) print sums[date], date}' merged.log  | sort -n
+```
+
+> Create a hashtable where the keys are the dates (column 3), sum the number of bytes transferred (column 4) for each date, print the result, and then sort by the most bytes transferred.
 
