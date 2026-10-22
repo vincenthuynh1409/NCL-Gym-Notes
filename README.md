@@ -27,7 +27,7 @@ To find a specific set of notes, simply open the corresponding markdown file top
 | **2** | Cryptography | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/2\)%20Cryptography.md) |
 | **3** | Password Cracking | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/3\)%20Password%20Cracking.md) |
 | **4** | Forensics | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/4\)%20Forensics.md) |
-| **5** | Log Analysis | 🚧 Finishing… |
+| **5** | Log Analysis | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/5\)%20Log%20Analysis.md) |
 | **6** | Network Traffic Analysis | 🚧 Coming Soon |
 | **7** | Scanning & Reconnaissance | 🚧 Coming Soon |
 | **8** | Web Application Exploitation | 🚧 Coming Soon |
