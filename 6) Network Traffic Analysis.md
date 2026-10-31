@@ -15,7 +15,11 @@ Upon opening the pcap file on wireshark, we can only see that this file only has
 
 2. What domain was requested? 
 	1. You can see the domain: `etas.com` in the Info column as well in the Queries drop down dissection info!
-![[Pasted image 20261022173754.png]]
+
+
+<img width="1213" height="717" alt="image" src="https://github.com/user-attachments/assets/9c0a2250-ce67-4b97-8701-c8b38e649209" />
+
+
 > Above is screenshot for #1, #2, and #3
 
 4. How many items were in the response?
@@ -27,7 +31,12 @@ Upon opening the pcap file on wireshark, we can only see that this file only has
 
 6. What is the IP address for the "welcome" subdomain?
 	1. Find the "`welcome.etas.com`" entry in the "Answers" dropdown and you can see the IP address: `1.1.1.1` (you can see it as well when expanding it)
-![[Pasted image 20261022195848.png]]
+
+
+<img width="919" height="915" alt="image" src="https://github.com/user-attachments/assets/800d82fa-9abd-49bc-98e1-1deead1280d4" />
+
+
+
 > Above screenshot is for #4, #5, and #6
 
 <br>
@@ -37,6 +46,8 @@ Upon opening the pcap file on wireshark, we can only see that this file only has
 The File Transfer Protocol (FTP) is a standard network protocol used to transfer computer files between a client and a server over a TCP/IP network.
 
 Before we do anything, make sure we must download the .pcap file and upload it onto Kali Linux machine. After the file is uploaded, open up "Wireshark" which is a pre-installed into Kali Linux, and click "File" > "Open" and open the pcap file!
+
+
 ### FTP Traffic (Easy) Write-Up
 
 1. What was the first username and password combination attempt made to log in to the server? (e.g. `user:password`)
@@ -124,3 +135,50 @@ Before we do anything, make sure we must download the .pcap file and upload it o
 	1. same as #4, `Linux cm4116 2.6.30.2-uc0 #3 Tue Feb 22 00:57:18 EST 2011 armv4tl unknown` > `armv4tl`!!!
 
 <br>
+
+## Packet Dissection 
+
+### Packet Dissection (Medium) Write-up
+
+- *Dissect an IP packet header to understand how the protocol works:*
+
+> NCL provides us with two diagrams for this challenge, and to make it easier to explain, I will just label them as "Diagram A" and "Diagram B" for reference!
+
+Diagram A (IPv4 Headers):
+
+<img width="1522" height="361" alt="image" src="https://github.com/user-attachments/assets/a0ac71ba-20dc-4cd4-b645-89c1aca6ca7a" />
+
+
+Diagram B (Binary Packet):
+
+<img width="470" height="310" alt="image" src="https://github.com/user-attachments/assets/d506c469-bd71-4260-b29b-ecb065e03f5c" />
+
+
+1. What is the header checksum in hexadecimal representation?
+	1. First, we look for "Header Checksum" in Diagram A which we can see is located at bit position 16-31 and on the 64 bit row.
+	2. since the row starts at 64 and the checksum starts on position 16 and ends at position 31, we add `64 + 16 = 80` and `64 + 31` (meaning that "Header Checksum"  begins at bit 80 (actual) and ends at bit 95).
+	3. thus, the checksum occupies bits 80-95 (16 bits total and 2 bytes total, because counting starts at the first number AND 1 byte = 8 bits).
+	4. Now, to convert the bit positions into byte positions, we divide the starting bit position by 8 (`80 / 8 = 10`) > So the checksum starts at byte 10! Now since the checksum starts a byte position 10, and checksum occupies 2 bytes (80-95), the next byte position is simply 11.
+	5. Next, looking at Diagram B, knowing checksum is at byte positions 10 and 11, we go to offset row 8 and count right to 10-11 > in this case, checksum is at `01001111` and `10010011`
+	6. Finally, to get the hexadecimal representation, we go to https://gchq.github.io/CyberChef/ (CyberChef), and convert those two binaries into hexadecimal (use recipes: "From Binary" and "To Hex") > `4f 93`!!!
+
+2. What is the TTL (Time To Live) of the packet?
+	1. looking at diagram A, TTL is located at bit position 0-7 (8 bits = 1 byte occupied)
+	2. Since TTL is on offset row 64 and starts at bit position 0, you add `64 + 0 = 64`, so the actual bits for TTL is 64 (start)
+	3. To convert to byte position, we divide the starting bit position by 8: `64 / 8 = 8`, so the TTL starts at byte 8!
+	4. next, looking at Diagram B, locate byte 8 (and since the length of TTL is only 8 bits, its only a 1 byte binary) > `01000000` 
+	5. Finally, convert `01000000` to decimal (for TTL) using CyberChef > `64`!!!
+
+3. What is the source IP address?
+	1. on Diagram A, the source IP address located at bit position 0-31 (32 bits counted = 4 bytes occupied)
+	2. since source IP address is on offset row 96 and starts at bit position 0: `96 + 0 = 96`
+	3. divide: `96 / 8 = 12` to find byte location
+	4. on Diagram B, find the four bytes starting at offset 12, in this case: `11000000`, `10101000`, `10000000`, and `10000000` 
+	5. Finally, convert these binaries into IP address using CyberChef:
+		1. input: `11000000 10101000 10000000 10000000`
+		2. ingredients: "From Binary" > "To Hex" > "Change IP Format (Input Format: Hex)"
+	6. `192.168.128.128`!!!
+
+4. What is the destination IP address?
+	1. same as #3: destination IP address occupies 4 bytes, is on offset row 128, and the byte location is at 16 > `10011111`, `11001011`, `01100000`, and `10011010`.
+	2. convert binaries into IP addresses using CyberChef (same as #3) = `159.203.96.154`!!!
