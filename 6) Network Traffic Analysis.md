@@ -210,3 +210,99 @@ CLIENT_RANDOM aed936c3b98cc1ea78108d04c0dbdbecda4842a96dbf2857561b17c1762019c3 f
 	2. Wireshark will automatically refresh, and use the `http` filter to find one of the packets that has labeled: `429 GET /flag.txt HTTP/1.1` > Follow the HTTP stream, and you will find the plaintext flag! > `SKY-LADN-1435`!!!
 
 <br>
+
+
+## Custom TCP Traffic Analysis
+
+### Pandora (Hard) Write-Up
+
+- The hackers have created their own custom protocol for private communication. Luckily, our analysts have managed to obtain the documentation describing the protocol. Use the provided capture to answer the following questions about a custom protocol hackers have created
+- We are given a .pcap file named: `pandora.pcap`
+
+1. What is the IP address of the server?
+	1. First, after analyzing the custom communication, we must filter for TCP because the custom protocol uses TCP to communicate between the client and server.
+	2. Open the .pcap file onto Wireshark and use the filter:  `tcp && !(tcp.port == 22) && !(tcp.port == 80)`
+		- `tcp`: Includes only packets that use the Transmission Control Protocol.
+		- `&&`: The logical `AND` operator, requiring all conditions in the filter to be true simultaneously.
+		- `!(tcp.port == 22)`: Excludes any TCP traffic where either the source or destination port is 22, which is typically used for Secure Shell (SSH) remote management.
+		- `!(tcp.port == 80)`: Excludes any TCP traffic where either the source or destination port is 80, which is used for unencrypted web traffic via HTTP.
+	3. look for the first packet that has `[SYN]` since the destination IP receiving the SYN is the server (and client vice versa) > look at "Destination" > `10.1.0.20` !!!
+
+2. What is the IP address of the client?
+	1. same as #1, but look at the "Source" IP address for the same packet: `10.1.0.217`!!!
+
+3. What port is the server listening on?
+	1. On the same packet, expand the "Transmission Control Protocol" packet dissector, and find `Destination Port:` > `60123`!!!
+
+4. What is the magic 2-byte ID in decimal representation?
+	1. On the same packet > Follow TCP stream > Show as: Hex Dump > Look at the first client-to-server data > The first 4 bytes represent the number of requests (`05`) and The next 2 bytes are the magic ID (which is `04 17`) 
+	2. Convert `04 17` into decimal via CyberChef > use ingredient: "From Base (Radix: 16)" > `1047`!!!
+
+5. How many encrypt requests were made by the client?
+	1. On the same packet > Follow TCP stream > Show as: Hex Dump > Look at the first client-to-server data > The first 4 bytes represent the number of requests (`05`)!!!
+
+6. What is the length of the first encrypt request (in bytes)?
+	1. On the same packet > Follow TCP stream > Show as: Hex Dump > Find the first magic ID: `04 17`, and  the next 4 bytes represent the request length > `04 17 00 00 00 58` (The length is `00 00 00 58` in hexadecimal.)
+	2. To convert hex to bytes, we can use CyberChef > input: `58` > Ingredients: "From Hex" and "To Decimal" > `88`!!!
+
+7. What is the length of the second encrypt request (in bytes)?
+	1. On the same packet > Follow TCP stream > Show as: Hex Dump > Find the second occurrence of the magic ID: `04 17` (use ``CTRL+F`` `"04 17"` `Find Next`) and the next 4 bytes represent the 2nd request length > `04 17 00 00 00 48` (The length is `00 00 00 48` in hexadecimal.)
+	2. To convert hex to bytes, we can use CyberChef > input: `48` > Ingredients: "From Hex" and "To Decimal" > `72`!!!
+
+8. How large is an individual encrypt hash (in bytes)?
+	1. On the same packet > Follow TCP stream > Show as: Hex Dump > Find the server's response length: `00 00 00 A0` >  convert `A0` into bytes using CyberChef (same ingredients as previous) > `160` bytes > Divide the total response length by the number of requests (`5`) > `160 / 5 = 32` > `32`!!!
+
+9. What was the encrypt response, in hexadecimal representation, for the first request? (e.g. `123456789ABCDEF`)
+	1. On the same packet > Follow TCP stream > Show as: Hex Dump 
+	2. we have to find the server-to-client portion of the Hex Dump, so on the left of "Show as: Hex Dump", change "`Entire Conversation`" to "`10.1.0.20:PORT -> 10.1.0.217:PORT`" 
+	3. Locate the response data after the 4-byte response length (`00 00 00 A0`) > Select and copy the first 32 bytes (first hash): `b8 c9 7b 08 e1 98 fa 9f   f7 9a 3a 9c 1f 01 09 b1   86 87 b7 a1 a3 ff 17 72   c2 9b 4d c8 67 53 d7 11`!!!
+
+10. What was the encrypt response, in hexadecimal representation, for the second request?
+	1. same as #9, but copy the next 32 bytes.
+	2. `88 17 15 3a e8 1d 94 b5 d6 c7 45 e6 3d 1d f3 1d 5d 02 bd 3b 03 0b 82 0c 3c 03 86 54 fd ca 61 9c` !!!
+
+11. What is the hidden flag being sent over the protocol?
+	1. On the same packet > Follow TCP stream > Show as: ASCII 
+	2. we have to find the client-to-server portion of the Hex Dump, so on the left of "Show as: ASCII", change "`Entire Conversation`" to "`10.1.0.217:PORT -> 10.1.0.20:PORT`" 
+	3. you will see something like: `.........XTkNMLUZKQ0ctMTYzMiBOQ0wtRkpDRy0xNjMyIE5DTC1GSkNHLTE2MzIgTkNMLUZKQ0ctMTYzMiBO...` and it looks awfully like base64 encoding! 
+	4. finally to convert the ASCII to Base64, copy the entire ASCII dump and paste it into CyberChef > use ingredient "From Base64" > we can find the flag repeated multiple times: `NCL-FJCG-1632`!!!
+
+<br>
+
+## CAN Bus Traffic Analysis
+
+### CAN Bus (Hard) Write-Up
+
+- *Ohm Motors has requested assistance with conducting a security audit on their CANBUS protocol. They have provided a small code snippet for updating vehicle speed indicators. Use this to help you complete this report: candump.pcap* 
+
+```C++
+int speed_id = 589;
+int speed_pos = 3;
+struct canfd_frame frame;
+
+while (PollEvent(&event) != 0) {
+    read_data(&event, &frame);
+    if (frame.can_id == speed_id) {
+        double speed = frame->data[speed_pos] << 8;
+        speed += frame->data[speed_pos + 1];
+        speed = speed / 100;
+        speed = speed * 0.6213751;
+        update_speed(speed);
+    }
+}
+```
+
+1. How many unique CAN Bus IDs are present in this capture?
+	1. open the .pcap file into Wireshark (Kali Linux) > click the first packet > expand the CAN Bus section of the packet dissector > right click on "ID" > then click "apply as column" > Go to "File" (top left) > "Export Packet Dissections" > "As CSV."
+	2. Open the CSV file into Google Sheets (via import), then find the column letter that contains the ID's (in my case, it is column H) > on empty cell, run: `=COUNTUNIQUE(H2:H)` and the unique number of bus ID's are shown > `36`!!!
+
+2. How many speed update messages are present in this capture?
+	1. Looking at the code, we can see that the speed ID is 589. Since speed messages have CAN ID 589, we count how many times that ID appears! 
+	2. run on an empty cell: `=COUNTIF(H2:H,"*589*")` to find all iterations of ID 589 > `352`!!!
+
+3. What is the maximum speed, in mph, that this vehicle reached in the capture? (round to the nearest hundredth)
+	1. on wireshark, click one of the first packets which contains ID 589 (the first one lol) > expand the CAN Bus section of the packet dissector > expand "Data" > right click `Data: 000000013b` > click "Apply as Column" (you will see a new column form with values that look like `000000013b`) > Go to "File" (top left) > "Export Packet Dissections" > "As CSV."
+	2. Open your new CSV file into Google Sheets (via import), then find the column letter that contains the data; in this case, it is now column H and the ID column is column I > on cell J2, paste this formula: `=IF(REGEXMATCH(I2,"ID: 589"),((HEX2DEC(MID(H2,7,2))*256+HEX2DEC(MID(H2,9,2)))/100)*0.6213751,"")` > `1.957331565` and drag the formula down through all rows (by double clicking the small blue dot on the bottom right of the cell) > In an empty cell, paste `=MAX(J2:J)` in which you would get the max speed >`20.13255324` > round to hundredth = `20.13`!!!
+
+
+<br>
