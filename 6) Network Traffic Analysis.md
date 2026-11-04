@@ -183,6 +183,8 @@ Diagram B (Binary Packet):
 	1. same as #3: destination IP address occupies 4 bytes, is on offset row 128, and the byte location is at 16 > `10011111`, `11001011`, `01100000`, and `10011010`.
 	2. convert binaries into IP addresses using CyberChef (same as #3) = `159.203.96.154`!!!
 
+<br>
+
 ## HTTPS & SSL/TLS Protocol Traffic Analysis
 
 ### Decrypt (Medium) Write-Up
