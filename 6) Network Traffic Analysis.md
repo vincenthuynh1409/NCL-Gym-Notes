@@ -338,3 +338,23 @@ while (PollEvent(&event) != 0) {
 	1. on wireshark, we will decrypt the traffic using the WEP key (`A4:81:53:B4:CF`) from earlier! > this can be done by selecting "Edit" (top left) > "Preferences" > "Protocols" > "IEEE 802.11" > then, check "Enable decryption" > click "Edit..." for Decryption keys > press the `+` sign to add a "wep" key type, and paste in `A4:81:53:B4:CF` for the key! > enter, then click "Apply" to apply the decryption!
 	2. Once the traffic is decrypted we can see a bunch of SSH and TCP packets! > click on the first packet, and look for the `Transmission Control Protocol` packet dissector and expand it > finally, find the checksum: `Checksum: 0x897b ...` > `89 7B`!!!
 
+### WiFi PCAP 2 (Medium) Write-Up
+
+- *We have created a packet capture from our test lab to see if you can handle the challenges of wireless password cracking: PCAP2.cap*
+
+1. How many IVs are in the packet capture?
+	1.  `$ aircrack-ng PCAP1.cap` (this also uses WEP encryption!)
+
+2. What is the key size of the wireless network data encryption method in bits?
+	1. `DE:AD:10:CC:D1:5E:A5:EC:DC:C2:D6:7A:CA` (13 bytes)
+	2. `13 * 8 = 104` > `104 + 24 (IV) = 128` > `128` bits!!!
+
+3. What is the IV for the first packet in the capture in hexadecimal representation?
+	1. on first packet (using `wlan.wep.iv` filter), expand the "IEEE 802.11 QoS Data ..." packet dissector > expand "WEP Parameters" > and find: `Initialization Vector: 0x0994ff` > `09 94 FF`!!!
+
+4. What is the WEP key?
+	1. aircrack > `DE:AD:10:CC:D1:5E:A5:EC:DC:C2:D6:7A:CA`!!!
+
+5. What is the TCP checksum, in hexadecimal representation, of the first packet in the capture?
+	1. decrypt network traffic data using WEP key (`DE:AD:10:CC:D1:5E:A5:EC:DC:C2:D6:7A:CA`) via "Edit" > click first packet and find `Transmission Control Protocol` packet dissector and expand it > finally, find the checksum: `Checksum: 08f0 ...` > `08 F0`!!!
+
