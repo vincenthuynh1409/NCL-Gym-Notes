@@ -308,3 +308,33 @@ while (PollEvent(&event) != 0) {
 
 
 <br>
+
+## WiFi Network Traffic Analysis
+
+### 🛠️ Tools
+
+1. `$ aircrack-ng [file]`
+
+### WiFi PCAP 1 (Easy) Write-Up
+
+- *We have created a packet capture from our test lab to see if you can handle the challenges of wireless password cracking: PCAP1.pcap*
+
+1. How many IVs are in the packet capture?
+	1. we will being using "aircrack" which is a pre-installed Kali Linux tool for assessing, monitoring, attacking, and testing the security of Wi-Fi networks! > to solve this question, we simply just run: `$ aircrack-ng PCAP1.pcap`
+
+> we can see that the wireless network data encryption method is WEP (Wired Equivalent Privacy) security!
+
+2. What is the key size of the wireless network data encryption method in bits?
+	1. near the end of the aircrack results, you can see the key found: `KEY FOUND! [ A4:81:53:B4:CF ]` > the key contains 5 bytes (10 hex characters), and since each byte is 8 bits, multiply: `5 * 8 = 40`
+	2. 40 isn't the key size though since we have to also account for the additional 24-bit Initialization Vector (IV), so we add: `40 + 24 = 64`!!!
+
+3. What is the IV for the first packet in the capture in hexadecimal representation?
+	1. open the .pcap file onto Wireshark > use the display filter: `wlan.wep.iv` to identify and isolate packets encrypted with WEP! > find and click on the first packet (no. 1) > expand the "IEEE 802.11 QoS Data ..." packet dissector > expand "WEP Parameters" > and find: `Initialization Vector: 0x003a33` > `00 3A 33`!!!
+
+4. What is the WEP key?
+	1. same as #1 & #2, near the end of the aircrack results, you can see the key found: `KEY FOUND! [ A4:81:53:B4:CF ]` > `A4:81:53:B4:CF`!!!
+
+5. What is the TCP checksum, in hexadecimal representation, of the first packet in the capture?
+	1. on wireshark, we will decrypt the traffic using the WEP key (`A4:81:53:B4:CF`) from earlier! > this can be done by selecting "Edit" (top left) > "Preferences" > "Protocols" > "IEEE 802.11" > then, check "Enable decryption" > click "Edit..." for Decryption keys > press the `+` sign to add a "wep" key type, and paste in `A4:81:53:B4:CF` for the key! > enter, then click "Apply" to apply the decryption!
+	2. Once the traffic is decrypted we can see a bunch of SSH and TCP packets! > click on the first packet, and look for the `Transmission Control Protocol` packet dissector and expand it > finally, find the checksum: `Checksum: 0x897b ...` > `89 7B`!!!
+
