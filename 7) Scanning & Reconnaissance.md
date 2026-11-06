@@ -98,4 +98,49 @@ PORT      STATE SERVICE
 
 <br>
 
+## Git Projects
 
+### 🛠️ Tools
+
+1. `$ git [options]`
+	1. `git log`: show a history log of all the commits (changes) made on the current branch
+	2. `git log [branch name]`: show a history log of all the commits on the target branch
+	3. `git show [commit hash]`: show the diff (specific addition/deletions) in that commit. The command hash is show in the `git log` command.
+	4. `git branch`: shows the different working branches (used to logically separate different works in progress)
+	5. `git checkout [branch name]`: switch to a different branch
+
+### Git (Easy) Write-Up
+
+- *Analyze a git project and find some hidden flags. You can try to clone the repository with this link: git@gitlab.com:cybergit4823/my-awesome-flag-project.git but that might not work for you. If not, you'll need to find a way around it.*
+
+> before we do anything, we gotta fix the URL:
+>  https://gitlab.com/cybergit4823/my-awesome-flag-project.git
+
+> [!NOTE] In order to do this in a Kali Linux terminal, make sure to clone the github repository by running: `$ git clone https://gitlab.com/cybergit4823/my-awesome-flag-project.git` (This command will create a new directory in the current working directory and from there, you can change into that directory using `cd` :)
+
+1. What is the display name of the author of this git project??
+	1. `$ git log` > `Author: Cyber Cyber <cybercyber@cyberskyline.com>` > `Cyber Cyber`!!!
+
+2. What is the short commit hash (first 8 characters) of the initial commit?
+	1. on `$ git log`, find `Initial commit`, and look at the commit hash: `commit f9714edd555475d11ec1509d03ab4207118339b3` > `f9714edd`!!!
+
+3. What is flag #1?
+	1. `$ cat README.md` > `SKY-HSNO-2303`!!!
+
+4. What is flag #2?
+	1. `$ git branch -a` (Show both local and remote branches) > ` remotes/origin/flag2`
+	2. switch to the flag2 branch by running: `$ git checkout flag2`
+	3. `$ ls` > `$ cat flag2.txt` > `SKY-OZNW-3730
+`
+5. What is flag #3?
+	1. `$ cat flag3.txt` > `SKY-CCXL-4067`!!!
+
+6. What is flag #4?
+	1. switch back to `master` branch via `$ git checkout master`
+	2. `$ git logs` > find the commit where it says "`Added flag4`" and copy the commit hash (`dfd1b3fc577268cfd35e73de8dc5fb8764d6f045`)
+	3. `$ git show dfd1b3fc577268cfd35e73de8dc5fb8764d6f045` > `+SKY-IRRK-9672`!!!
+
+7. What is flag #5?
+	1. `$ git log` > `SKY-DKIT-9801`!!!
+
+<br>
