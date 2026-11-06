@@ -146,3 +146,29 @@ PORT      STATE SERVICE
 	1. `$ git log` > `SKY-DKIT-9801`!!!
 
 <br>
+
+## Netcat 
+
+### 🛠️ Tools
+
+1. `$ nc [hostname] [port number]`
+
+### Net Track (Medium) Write-Up
+
+- *Can you interact with the strange server at `net-track.services.cityinthe.cloud:8090` and see what information you can extract?*
+
+> before we solve any of these challenges, we have to connect to the server through netcat by running: `$ nc net-track.services.cityinthe.cloud 8090`
+
+1. What is the name and version of the software?
+	1. once in a "hung shell" (terminal looks like it is unresponsive and stopped executing), just simply press ENTER key and you will be hit with: `Use help to get a list of supported commands`
+	2. type in `help` and you will see a list of commands: `version list get help`
+	3. now just type `version` > `RadicalShell v9`!!!
+
+2. What is the flag?
+	1. `list` > `records secret notes schedule contacts` > `get secrets` > `SKY-NCAT-3071`
+
+3. What is the size of the largest file in bytes?
+	1. You can utilize the character count of each file to estimate the file size. Each character of a text file occupies 1 byte when stored (Count the number of characters used in each file and convert that to bytes).
+	2. when looking through every file using `list [file]`, I have found that the file "`schedule`" has the most characters (`Completely free and busy when convenient`) > use character counter online and paste the text > 40 characters = `40` bytes!!!
+
+<br>
