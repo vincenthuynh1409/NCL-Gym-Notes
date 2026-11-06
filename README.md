@@ -29,7 +29,7 @@ To find a specific set of notes, simply open the corresponding markdown file top
 | **4** | Forensics | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/4\)%20Forensics.md) |
 | **5** | Log Analysis | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/5\)%20Log%20Analysis.md) |
 | **6** | Network Traffic Analysis | [View Notes](https://github.com/vincenthuynh1409/NCL-Gym-Notes/blob/main/6\)%20Network%20Traffic%20Analysis.md) |
-| **7** | Scanning & Reconnaissance | Working... |
+| **7** | Scanning & Reconnaissance | Finishing Up... |
 | **8** | Web Application Exploitation | 🚧 Coming Soon |
 | **9** | Enumeration & Exploitation | 🚧 Coming Soon |
 - - - 
