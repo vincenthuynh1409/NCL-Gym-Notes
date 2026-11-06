@@ -172,3 +172,13 @@ PORT      STATE SERVICE
 	2. when looking through every file using `list [file]`, I have found that the file "`schedule`" has the most characters (`Completely free and busy when convenient`) > use character counter online and paste the text > 40 characters = `40` bytes!!!
 
 <br>
+
+
+## Metadata Retrieval
+
+### Metadata (Hard) Write-Up
+
+- *We have found what appears to be a server on **`metadata.services.cityinthe.cloud:1338`** displaying metadata about a cloud service. Can you find out more information?*
+
+1. What availability zone is this instance hosted in?
+	1. (WIP)
