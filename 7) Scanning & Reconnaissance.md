@@ -57,3 +57,43 @@
 
 <br>
 
+## Nmap (Network Mapper)
+
+### 🛠️ Tools
+
+1. `$ nmap [options] [target]`
+	1. `-sU`: UDP scan
+	2.  `-sT`: TCP scan
+	3. `-sV`: Identify service versions
+
+### NMAP (Easy) Write-Up
+
+- *Test your understanding of port scanning by scanning `ports.cityinthe.cloud` and answering these questions.*
+
+1. What is the lowest open TCP port on the system?
+2. What is the second lowest open TCP port on the system?
+3. What is the third lowest open TCP port on the system?
+
+```bash
+$ nmap ports.cityinthe.cloud
+
+PORT      STATE SERVICE
+7/tcp     open  echo
+13/tcp    open  daytime
+37/tcp    open  time
+16080/tcp open  osxwebadmin
+```
+
+> running `$ nmap ports.cityinthe.cloud` (above) will answer the first 3 questions
+
+>[!NOTE] you can use the `-sT` flag: `$nmap -sT ports.cityinthe.cloud` for a TCP scan!
+
+4. What is the lowest open UDP port on the system?
+	1. `$ nmap -sU ports.cityinthe.cloud` 
+		1. `-sU`: UDP scan
+
+5. What software is being run on TCP port 16080?
+	1. `nmap -sV ports.cityinthe.cloud`
+		1. `-sV`: Identify service versions
+
+<br>
