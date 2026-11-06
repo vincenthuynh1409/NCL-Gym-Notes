@@ -358,3 +358,53 @@ while (PollEvent(&event) != 0) {
 5. What is the TCP checksum, in hexadecimal representation, of the first packet in the capture?
 	1. decrypt network traffic data using WEP key (`DE:AD:10:CC:D1:5E:A5:EC:DC:C2:D6:7A:CA`) via "Edit" > click first packet and find `Transmission Control Protocol` packet dissector and expand it > finally, find the checksum: `Checksum: 08f0 ...` > `08 F0`!!!
 
+
+### WiFi PCAP 3 (Hard) Write-Up
+
+- *We have created a packet capture on a temporary wireless network that a couple of hackers have set up. Break into their network and see what you can learn: PCAP3.cap*
+
+1. What is the MAC address of the router?
+	1. opening up wireshark, we will find that the first packet (named `TpLinkTechno_80...`) is the router since it is the SSID (Service Set Identifier) name! 
+	2. click on that first packet > expand the "IEEE 802.11 Beacon frame" packet dissector > find `BSS Id: TpLinkTechno_80:76:e4 (c0:4a:00:80:76:e4)` > and `c0:4a:00:80:76:e4` is the MAC address!!!
+
+2. What is the ESSID of the wifi network?
+	1. ESSID (Extended Service Set Identifier) and SSID (Service Set Identifier) are used interchangeably, and in wireshark, it uses SSID, so we look for SSID!
+	2. expand the "IEEE 802.11 Wireless Management" packet dissector > "Tagged parameters..." > "Tag: SSID parameter set: "TP-LINK_8076E4"" > `SSID: "TP-LINK_8076E4"` > `TP-LINK_8076E4`!!!
+
+> There is another way to solve #1 and #2 more faster by using aircrack on your Kali Linux terminal, run: `$ aircrack-ng PCAP3.cap`  and it will provide you with both the MAC address and the ESSID of the wifi network.
+
+3. What is the password for the wireless network?
+	1. to crack the password, we can use aircrack! we will be using the rockyou wordlist: `aircrack-ng -w /usr/share/wordlists/rockyou.txt -b C0:4A:00:80:76:E4 PCAP3`
+		1. `-w`: specifies wordlist
+		2. `-b`: specifies the target access point's BSSID
+		3. `PCAP3`: the file containing the packet capture of the network traffic
+	2.  `KEY FOUND! [ blueberrymuffin ]` > the password is `blueberrymuffin`!!
+
+4. What is the IP address of the router?
+	1. on wireshark, we will decrypt the traffic using the WPA decryption key (`blueberrymuffin`) from earlier! > this can be done by selecting "Edit" (top left) > "Preferences" > "Protocols" > "IEEE 802.11" > then, check "Enable decryption" > click "Edit..." for Decryption keys > press the `+` sign to add a "wpa-pwd (WPA password)" key type, and paste in `blueberrymuffin` for the key! > enter, then click "Apply" to apply the decryption!
+	2. after applying and pressing OK, we will see that there is a new packet (~38) which contains the source IP address and destination IP address as DHCP packet > we look at the source IP: `192.168.0.254`!!!
+
+5. What company manufactured the router?
+	1. after decrypting the network traffic, you will see a bunch of new TCP and HTTP packets! we can filter these by using the display filter: `tcp && http`
+	2. click on the first packet > follow HTTP stream > and find: `WWW-Authenticate: Basic realm="TP-LINK Wireless N Nano Router WR702N"` (the exact router model!) > the company is `TP-LINK`!!!
+
+6. What is the model of the router?
+	1.  `TP-LINK Wireless N Nano Router WR702N`
+
+7. What firmware version is installed on the router?
+	1. find the HTTP packet with info `GET /userRpm/StatusRpm.htm HTTP/1.1` (this path is the internal status page used by TP-Link routers for their web management interface) > follow HTTP stream > find `"4.19.1 Build 130528 Rel.52704n ",` > the version is: `4.19.1`
+
+8. What release number is the router using?
+	1. `"4.19.1 Build 130528 Rel.52704n ",` > `Rel.52704n` > `52704n`!!!
+
+9. What is the IP address of the user who logged into the router admin panel?
+	1. TWO ways:
+		1. look at the destination IP address of the packet > `192.168.0.101`!!!
+		2. on the HTTP stream of that packet, click "Entire Conversation" and find the IP address which isn't the router IP address (`192.168.0.254`) > `192.168.0.101`!!!
+
+10. What is the MAC address of the first victim of the deauth attack?
+	1. A Wi-Fi deauthentication (deauth) attack is a type of denial-of-service (DoS) attack that disconnects a target device from a wireless access point (WAP) > we have to filter the packets that selects specific packets which contain deauth attacks, and to do this, we use the display filter: `wlan.fc.type_subtype == 12` 
+	2. clicking on the first packet, we expand the "IEEE 802.11 Deauthentication" packet dissector > and find: `Destination address: Apple_47:44:38 (b8:e8:56:47:44:38)` > `b8:e8:56:47:44:38` !!!
+
+11. What is the MAC address of the second victim of the deauth attack?
+	1. scroll down until you find another destination address which is different than the router MAC address and the first victim MAC address > `Destination address: Apple_0b:26:ba (80:e6:50:0b:26:ba)` > `80:e6:50:0b:26:ba`!!!
