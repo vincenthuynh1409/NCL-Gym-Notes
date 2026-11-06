@@ -2,7 +2,7 @@
 
 ## DNS Resolver Query
 
-### 🛠️ Tools
+### 🛠️ Tools & Commands
 
 1. `$ dig [@server-hostname] [record type: A,MX,...] [domain] [options]`
 	1. `A`: maps domain to IPv4 address
@@ -59,7 +59,7 @@
 
 ## Nmap (Network Mapper)
 
-### 🛠️ Tools
+### 🛠️ Tools & Commands
 
 1. `$ nmap [options] [target]`
 	1. `-sU`: UDP scan
@@ -86,7 +86,7 @@ PORT      STATE SERVICE
 
 > running `$ nmap ports.cityinthe.cloud` (above) will answer the first 3 questions
 
->[!NOTE] you can use the `-sT` flag: `$nmap -sT ports.cityinthe.cloud` for a TCP scan!
+> [!NOTE] you can use the `-sT` flag: `$nmap -sT ports.cityinthe.cloud` for a TCP scan!
 
 4. What is the lowest open UDP port on the system?
 	1. `$ nmap -sU ports.cityinthe.cloud` 
@@ -100,7 +100,7 @@ PORT      STATE SERVICE
 
 ## Git Projects
 
-### 🛠️ Tools
+### 🛠️ Tools & Commands
 
 1. `$ git [options]`
 	1. `git log`: show a history log of all the commits (changes) made on the current branch
