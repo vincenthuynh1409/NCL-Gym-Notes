@@ -9,6 +9,8 @@
 	2. `MX`: Identifies mail servers
 	3. `NS`: Identifies authoritative DNS servers
 	4. `RP`: responsible person
+    5. `TXT`: stores text information
+	6. `SRV`: Identifies servers providing specific services
 
 ### Dig (Easy) Write-up
 
