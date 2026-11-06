@@ -86,7 +86,8 @@ PORT      STATE SERVICE
 
 > running `$ nmap ports.cityinthe.cloud` (above) will answer the first 3 questions
 
-> [!NOTE] you can use the `-sT` flag: `$nmap -sT ports.cityinthe.cloud` for a TCP scan!
+> [!NOTE]
+> you can use the `-sT` flag: `$nmap -sT ports.cityinthe.cloud` for a TCP scan!
 
 4. What is the lowest open UDP port on the system?
 	1. `$ nmap -sU ports.cityinthe.cloud` 
@@ -116,7 +117,8 @@ PORT      STATE SERVICE
 > before we do anything, we gotta fix the URL:
 >  https://gitlab.com/cybergit4823/my-awesome-flag-project.git
 
-> [!NOTE] In order to do this in a Kali Linux terminal, make sure to clone the github repository by running: `$ git clone https://gitlab.com/cybergit4823/my-awesome-flag-project.git` (This command will create a new directory in the current working directory and from there, you can change into that directory using `cd` :)
+> [!NOTE]
+> In order to do this in a Kali Linux terminal, make sure to clone the github repository by running: `$ git clone https://gitlab.com/cybergit4823/my-awesome-flag-project.git` (This command will create a new directory in the current working directory and from there, you can change into that directory using `cd` :)
 
 1. What is the display name of the author of this git project??
 	1. `$ git log` > `Author: Cyber Cyber <cybercyber@cyberskyline.com>` > `Cyber Cyber`!!!
