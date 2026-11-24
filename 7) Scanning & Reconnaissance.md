@@ -174,11 +174,33 @@ PORT      STATE SERVICE
 <br>
 
 
-## Metadata Retrieval
+
+## AWS EC2's Instance Metadata Service (IMDS) Enumeration
+
+### 🛠️ Tools
+
+1. https://amilookup.com/ (AMI ID Lookup)
 
 ### Metadata (Hard) Write-Up
 
 - *We have found what appears to be a server on **`metadata.services.cityinthe.cloud:1338`** displaying metadata about a cloud service. Can you find out more information?*
 
 1. What availability zone is this instance hosted in?
-	1. (WIP)
+	1. paste `metadata.services.cityinthe.cloud:1338` into browser
+	2. `http://metadata.services.cityinthe.cloud:1338/latest/meta-data/placement/availability-zone`
+
+2. What is the security credentials role named?
+	1. `http://metadata.services.cityinthe.cloud:1338/latest/meta-data/iam/security-credentials`
+
+3. What is the instance type being used?
+	1. `http://metadata.services.cityinthe.cloud:1338/latest/meta-data/instance-type`
+
+4. What is the operating system name and version number?
+	1. first we find the AMI (Amazon Machine Image, which is a template used to launch EC2 instances) id number > `http://metadata.services.cityinthe.cloud:1338/latest/meta-data/ami-id` > `ami-08305dd8ab642ad8c`
+	2. copy and paste the ami id into https://amilookup.com/ (AMI ID Lookup) > find `Description anonical, Ubuntu, 16.04 LTS, arm64 xenial image build on 2021-09-28` > `Ubuntu, 16.04 LTS`!!!
+
+5. What is the flag?
+	1. `http://metadata.services.cityinthe.cloud:1338/latest/meta-data/network/interfaces/macs/` > copy and paste the MAC address into the URL to specify that endpoint.
+	2. `http://metadata.services.cityinthe.cloud:1338/latest/meta-data/network/interfaces/macs/0e:49:61:0f:c3:11/vpc-ipv4-cidr-blocks`
+
+
